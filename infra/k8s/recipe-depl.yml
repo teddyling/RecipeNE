@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recipe-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recipe
+  template:
+    metadata:
+      labels:
+        app: recipe
+    spec:
+      containers:
+        - name: recipe
+          image: lingta/recipe
+          env:
+            - name: MONGO_URL
+              value: "mongodb://recipe-mongo-srv:27017/recipe"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recipe-srv
+spec:
+  selector:
+    app: recipe
+  ports:
+    - name: recipe
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

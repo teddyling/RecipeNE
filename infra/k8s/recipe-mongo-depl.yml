@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recipe-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recipe-mongo
+  template:
+    metadata:
+      labels:
+        app: recipe-mongo
+    spec:
+      containers:
+        - name: recipe-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recipe-mongo-srv
+spec:
+  selector:
+    app: recipe-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

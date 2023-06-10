@@ -1,0 +1,18 @@
+export enum Category {
+  PORK = "Pork",
+  BEEF = "Beef",
+  LAMB = "Lamb",
+  FISH = "Fish",
+  CHICKEN = "Chicken",
+  SEAFOOD = "Seafood",
+  VEGETABLE = "Vegetable",
+  SOY = "Soy",
+  VEGAN_FRIENDLY = "Vegetarian-friendly",
+  APPETIZER = "Appitizer",
+  MAIN_DISH = "Main Dish",
+  SIDE_DISH = "Cold Dish",
+  SOUP = "Soup",
+  DESSERT = "Dessert",
+  NOODLE = "Noodle",
+  RICE = "Rice",
+}
