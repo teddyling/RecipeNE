@@ -17,7 +17,7 @@ spec:
           image: lingta/recipe
           env:
             - name: MONGO_URL
-              value: "mongodb://recipe-mongo-srv:27017/recipe"
+              value: "mongodb://recipe-mongo-srv:27017/recipe?directConnection=true"
 
 ---
 apiVersion: v1

@@ -1,12 +1,13 @@
 import express, { Request, Response } from "express";
 import { Category } from "../models/recipe-category";
-import { Recipe } from "../models/recipe";
-import e from "express";
+import { Recipe, RecipeAttrs } from "../models/recipe";
+
 const router = express.Router();
 
-const recipeSeeds = [
+const recipeSeeds: RecipeAttrs[] = [
   {
     title: "GuoBaoRou",
+    popularity: 5,
     description: "Harbin Dish",
     ingredients: ["pork", "carrot", "scallion", "garlic"],
     steps: ["fried pork", "make sauce", "cook all together"],
@@ -14,9 +15,11 @@ const recipeSeeds = [
     recipe_provider_name: "Lao Dong Bei",
     recipe_provider_url: "https://www.youtube.com/@user-ep3ex5xz5r",
     recipe_video_url: "https://www.youtube.com/watch?v=U3JHL-F7y5Y&t=469s",
+    must_know: true,
   },
   {
     title: "Potato braise eggplant",
+    popularity: 5,
     description: "Common Dongbei Dish",
     ingredients: [
       "eggplant",
@@ -37,9 +40,11 @@ const recipeSeeds = [
     recipe_provider_name: "Lao Dong Bei",
     recipe_provider_url: "https://www.youtube.com/@user-ep3ex5xz5r",
     recipe_video_url: "https://www.youtube.com/watch?v=hrhtZo4gyl8",
+    must_know: true,
   },
   {
     title: "Green pepper and dry bean curd",
+    popularity: 4.5,
     description: "Home Dongbei Dish",
     ingredients: [
       "dry bean curd",
@@ -61,6 +66,7 @@ const recipeSeeds = [
   },
   {
     title: "red braised lamb",
+    popularity: 4,
     description: "delicious lamb dish",
     ingredients: ["Lamb leg", "cook lamb", "star anisee", "ginger", "scallion"],
     steps: [
@@ -76,6 +82,7 @@ const recipeSeeds = [
   },
   {
     title: "potato braised beef",
+    popularity: 4,
     description: "delicious beef dish",
     ingredients: [
       "beef siloin",
@@ -100,6 +107,7 @@ const recipeSeeds = [
   },
   {
     title: "red braised fish",
+    popularity: 4.5,
     description: "delicious fish dish",
     ingredients: [
       "fish",
@@ -123,6 +131,7 @@ const recipeSeeds = [
   },
   {
     title: "North Eastern egg fried sause noodle",
+    popularity: 4,
     description: "quick and easy noodle",
     ingredients: ["egg", "north eastern bean paste", "green pepper"],
     steps: ["fried sause", "add on noodle"],
@@ -133,6 +142,7 @@ const recipeSeeds = [
   },
   {
     title: "chicken braised mushroom",
+    popularity: 5,
     description: "one of the most famous dongbei dish",
     ingredients: [
       "chicken",
@@ -149,9 +159,11 @@ const recipeSeeds = [
     recipe_provider_name: "Lao Dong Bei",
     recipe_provider_url: "https://www.youtube.com/@user-ep3ex5xz5r",
     recipe_video_url: "https://www.youtube.com/watch?v=22ITW8TuYLI&t=8s",
+    must_know: true,
   },
   {
     title: "sesame sause noodle",
+    popularity: 3.5,
     description: "quick and easy noodle",
     ingredients: [
       "cucumber",
@@ -176,6 +188,7 @@ const recipeSeeds = [
   },
   {
     title: "egg fried rice",
+    popularity: 5,
     description: "famous and easy rice",
     ingredients: ["rice", "cucumber", "carrot", "scallion"],
     steps: ["cut veggies", "fried rice"],
@@ -186,6 +199,7 @@ const recipeSeeds = [
   },
   {
     title: "Candied Sweet potato",
+    popularity: 5,
     description: "the most famous dongbei dessert",
     ingredients: ["sweet potato", "sugar"],
     steps: ["cut and fry sweet potato", "cook sugar", "mix"],
@@ -198,9 +212,11 @@ const recipeSeeds = [
     recipe_provider_name: "Lao Dong Bei",
     recipe_provider_url: "https://www.youtube.com/@user-ep3ex5xz5r",
     recipe_video_url: "https://www.youtube.com/watch?v=udjW6A3jUjA",
+    must_know: true,
   },
   {
     title: "scallion mix tofu",
+    popularity: 4,
     description: "delicious and fragrent appetizer",
     ingredients: ["tofu", "scallion", "cilantro"],
     steps: ["cut scallion, tofu, and cilantro", "boil tofu", "mix together"],
@@ -216,6 +232,7 @@ const recipeSeeds = [
   },
   {
     title: "spicy fried clams",
+    popularity: 4,
     description: "spicy and fragrent seafood dish",
     ingredients: ["clams", "dry chilli", "garlic"],
     steps: ["boil clams", "fried chilli and garlic", "mix together"],

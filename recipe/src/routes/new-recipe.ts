@@ -13,7 +13,6 @@ router.post(
       const savedRecipe = await recipe.save();
 
       res.status(201).send({
-        status: "success",
         data: {
           recipe: savedRecipe,
         },

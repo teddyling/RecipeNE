@@ -1,8 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
 import { Recipe } from "../models/recipe";
-import { NotFoundError } from "../../utilities/errors/not-found-error";
-
+import { ResourceNotFoundError } from "../../utilities/errors/resource-not-found-error";
 const router = express.Router();
 
 router.get(
@@ -14,11 +12,10 @@ router.get(
 
       if (!foundRecipe) {
         console.log("NOT FOUND!!");
-        throw new NotFoundError();
+        throw new ResourceNotFoundError();
       }
 
       res.send({
-        status: "success",
         data: {
           recipe: foundRecipe,
         },

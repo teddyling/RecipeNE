@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { Recipe } from "../models/recipe";
+import { ResourceNotFoundError } from "../../utilities/errors/resource-not-found-error";
 // This route is admin only route
 const router = express.Router();
 
@@ -8,10 +9,11 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
-      await Recipe.findByIdAndDelete(id);
-
+      const recipe = await Recipe.findByIdAndDelete(id);
+      if (!recipe) {
+        throw new ResourceNotFoundError();
+      }
       res.status(204).send({
-        status: "success",
         data: null,
       });
     } catch (err) {
