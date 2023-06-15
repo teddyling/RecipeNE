@@ -1,1 +1,3 @@
 recipe/node_modules/
+auth/node_modules/
+auth/jwt-secret.txt
