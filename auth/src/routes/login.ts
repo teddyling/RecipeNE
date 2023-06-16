@@ -5,6 +5,7 @@ import { User } from "../model/user";
 import { BadRequestError } from "../../utilities/errors/bad-request-error";
 import { RequestValidationError } from "../../utilities/errors/request-validation-error";
 import { Password } from "../service/Password";
+import { ensureLogin } from "../../utilities/middlewares/ensureLogin";
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ router.post(
       .notEmpty()
       .withMessage("A password must be supplied"),
   ],
+  ensureLogin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);

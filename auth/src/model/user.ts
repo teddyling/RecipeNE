@@ -22,6 +22,8 @@ interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
   role: string;
+  passwordChangedAt?: Date;
+  changedPasswordAfterJwt: (timestamp: number) => boolean;
 }
 
 const userSchema = new mongoose.Schema(
@@ -45,6 +47,9 @@ const userSchema = new mongoose.Schema(
       enum: [UserRole.USER, UserRole.ADMIN],
       default: UserRole.USER,
     },
+    passwordChangedAt: {
+      type: Date,
+    },
   },
   {
     toJSON: {
@@ -61,6 +66,15 @@ const userSchema = new mongoose.Schema(
 
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
+};
+
+userSchema.methods.changedPasswordAfterJwt = function (JWTTimestamp: number) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = this.passwordChangedAt.getTime() / 1000;
+    return JWTTimestamp < changedTimestamp;
+  }
+
+  return false;
 };
 
 userSchema.pre("save", async function (done) {
