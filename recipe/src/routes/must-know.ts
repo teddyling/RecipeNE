@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { applyAPIFeature } from "../../utilities/functions/apply-api-features";
+import { applyAPIFeature } from "../utilities/functions/apply-api-features";
 
 const router = express.Router();
 

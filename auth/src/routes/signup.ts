@@ -2,9 +2,16 @@ import jwt from "jsonwebtoken";
 import { body, validationResult } from "express-validator";
 import express, { Request, Response, NextFunction } from "express";
 import { User } from "../model/user";
-import { BadRequestError } from "../../utilities/errors/bad-request-error";
-import { RequestValidationError } from "../../utilities/errors/request-validation-error";
-import { ensureLogin } from "../../utilities/middlewares/ensureLogin";
+// import { BadRequestError } from "../../utilities/errors/bad-request-error";
+// import { RequestValidationError } from "../../utilities/errors/request-validation-error";
+// import { ensureLogin } from "../../utilities/middlewares/ensureLogin";
+
+import { BadRequestError } from "@dongbei/utilities";
+import {
+  RequestValidationError,
+  ServerInternalError,
+} from "@dongbei/utilities";
+import { sendEmail } from "@dongbei/utilities";
 
 const router = express.Router();
 
@@ -62,19 +69,38 @@ router.post(
         password,
         email,
       });
+
+      const verifyToken = newUser.createEmailVerifyToken();
       await newUser.save();
-      const token = jwt.sign(
-        { id: newUser.id, role: newUser.role },
-        process.env.JWT_SECRET!,
-        {
-          expiresIn: "20m",
-        }
-      );
-      res.status(201).send({
+
+      const verifyURL = `${req.protocol}://authenticdongbei.com/api/v1/users/verifysignup/${verifyToken}`;
+      const emailSubject = `Your account verification token (valid for 30 min)`;
+      const content = `Send a get request to ${verifyURL} to reset your password`;
+      try {
+        await sendEmail(newUser.email, emailSubject, content);
+      } catch (error) {
+        newUser.emailVerifyToken = undefined;
+        newUser.emailVerifyTokenExpires = undefined;
+        await newUser.save();
+        return next(new ServerInternalError("Failed sending email."));
+      }
+
+      // const token = jwt.sign(
+      //   {
+      //     id: newUser.id,
+      //     role: newUser.role,
+      //     username: newUser.username,
+      //     email: newUser.email,
+      //   },
+      //   process.env.JWT_SECRET!,
+      //   {
+      //     expiresIn: "20m",
+      //   }
+      // );
+      res.status(200).send({
         data: {
           user: newUser,
         },
-        token,
       });
     } catch (err) {
       return next(err);

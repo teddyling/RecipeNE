@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import { Recipe } from "../models/recipe";
-import { ResourceNotFoundError } from "../../utilities/errors/resource-not-found-error";
+//import { ResourceNotFoundError } from "../../utilities/errors/resource-not-found-error";
+import { ResourceNotFoundError } from "@dongbei/utilities";
+
 // This route is admin only
 const router = express.Router();
 

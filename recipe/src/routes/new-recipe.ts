@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { Recipe } from "../models/recipe";
 import { Category } from "../models/recipe-category";
+
 // This route is admin only route
 const router = express.Router();
 

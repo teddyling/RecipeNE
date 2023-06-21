@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { app } from "./app";
-import { DatabaseConnectionError } from "../utilities/errors/database-connection-error";
+// import { DatabaseConnectionError } from "../utilities/errors/database-connection-error";
+import { DatabaseConnectionError } from "@dongbei/utilities";
 
 const start = async () => {
   process.on("uncaughtException", (err) => {

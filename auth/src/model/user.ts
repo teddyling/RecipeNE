@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Password } from "../service/Password";
+import crypto from "crypto";
 
 enum UserRole {
   USER = "user",
@@ -22,8 +23,20 @@ interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
   role: string;
+  verify: boolean;
+  emailVerifyToken?: string;
+  emailVerifyTokenExpires?: Date;
   passwordChangedAt?: Date;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
+  changedEmail?: string;
+  changedEmailToken?: string;
+  changedEmailExpires?: Date;
+  active: boolean;
   changedPasswordAfterJwt: (timestamp: number) => boolean;
+  createResetPasswordToken: () => string;
+  createEmailVerifyToken: () => string;
+  createChangeEmailToken: () => string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -47,8 +60,24 @@ const userSchema = new mongoose.Schema(
       enum: [UserRole.USER, UserRole.ADMIN],
       default: UserRole.USER,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerifyToken: String,
+    emailVerifyTokenExpires: Date,
     passwordChangedAt: {
       type: Date,
+    },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    changedEmail: String,
+    changedEmailToken: String,
+    changedEmailExpires: Date,
+
+    active: {
+      type: Boolean,
+      default: true,
     },
   },
   {
@@ -73,8 +102,43 @@ userSchema.methods.changedPasswordAfterJwt = function (JWTTimestamp: number) {
     const changedTimestamp = this.passwordChangedAt.getTime() / 1000;
     return JWTTimestamp < changedTimestamp;
   }
-
   return false;
+};
+
+userSchema.methods.createResetPasswordToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+  return resetToken;
+};
+
+userSchema.methods.createEmailVerifyToken = function () {
+  const verifyToken = crypto.randomBytes(128).toString("hex");
+
+  this.emailVerifyToken = crypto
+    .createHash("sha256")
+    .update(verifyToken)
+    .digest("hex");
+
+  this.emailVerifyTokenExpires = Date.now() + 30 * 60 * 1000;
+  return verifyToken;
+};
+
+userSchema.methods.createChangeEmailToken = function () {
+  const changeToken = crypto.randomBytes(128).toString("hex");
+
+  this.changedEmailToken = crypto
+    .createHash("sha256")
+    .update(changeToken)
+    .digest("hex");
+  this.changedEmailExpires = Date.now() + 10 * 60 * 1000;
+
+  return changeToken;
 };
 
 userSchema.pre("save", async function (done) {
@@ -82,6 +146,14 @@ userSchema.pre("save", async function (done) {
     const hashed = await Password.toHash(this.get("password"));
     this.set("password", hashed);
   }
+  done();
+});
+
+userSchema.pre("save", function (done) {
+  if (!this.isModified("password") || this.isNew) {
+    return done();
+  }
+  this.passwordChangedAt = new Date(Date.now() - 1000);
   done();
 });
 

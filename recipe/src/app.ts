@@ -1,4 +1,9 @@
 import express, { Request, Response } from "express";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
+import { xss } from "express-xss-sanitizer";
+import hpp from "hpp";
 
 import { getAllRecipeRouter } from "./routes/all-recipe";
 import { seedRouter } from "./routes/seed-recipe";
@@ -7,11 +12,29 @@ import { getOneRecipeRouter } from "./routes/one-recipe";
 import { createNewRecipeRouter } from "./routes/new-recipe";
 import { updateRecipeRouter } from "./routes/update-recipe";
 import { deleteRecipeRouter } from "./routes/delete-recipe";
-import { errorHandler } from "../utilities/middlewares/error-handler";
-import { NotFoundError } from "../utilities/errors/not-found-error";
+// import { errorHandler } from "../utilities/middlewares/error-handler";
+// import { NotFoundError } from "../utilities/errors/not-found-error";
+import { errorHandler } from "@dongbei/utilities";
+import { NotFoundError } from "@dongbei/utilities";
 
 const app = express();
-app.use(express.json());
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "To many requests",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(helmet());
+app.use("/api/v1/recipes", limiter);
+app.use(express.json({ limit: "1mb" }));
+app.use(mongoSanitize());
+app.use(xss());
+app.use(
+  hpp({
+    whitelist: ["title", "popularity", "category"],
+  })
+);
 
 app.use(seedRouter);
 app.use(getAllRecipeRouter);

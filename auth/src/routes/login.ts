@@ -2,10 +2,12 @@ import express, { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 import { User } from "../model/user";
-import { BadRequestError } from "../../utilities/errors/bad-request-error";
-import { RequestValidationError } from "../../utilities/errors/request-validation-error";
+//import { BadRequestError } from "../../utilities/errors/bad-request-error";
+//import { RequestValidationError } from "../../utilities/errors/request-validation-error";
+import { BadRequestError } from "@dongbei/utilities";
+import { RequestValidationError } from "@dongbei/utilities";
 import { Password } from "../service/Password";
-import { ensureLogin } from "../../utilities/middlewares/ensureLogin";
+// import { ensureLogin } from "../utilities/middlewares/ensureLogin";
 
 const router = express.Router();
 
@@ -22,7 +24,7 @@ router.post(
       .notEmpty()
       .withMessage("A password must be supplied"),
   ],
-  ensureLogin,
+  // ensureLogin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
@@ -42,7 +44,12 @@ router.post(
         throw new BadRequestError("Invalid Credentials");
       }
       const token = jwt.sign(
-        { id: existingUser.id, role: existingUser.role },
+        {
+          id: existingUser.id,
+          role: existingUser.role,
+          email: existingUser.email,
+          username: existingUser.username,
+        },
         process.env.JWT_SECRET!,
         {
           expiresIn: "20m",
@@ -50,7 +57,7 @@ router.post(
       );
       res.status(200).send({
         data: existingUser,
-        jwt: token,
+        token: token,
       });
     } catch (err) {
       return next(err);
