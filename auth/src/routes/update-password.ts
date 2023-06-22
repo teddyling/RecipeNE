@@ -14,6 +14,7 @@ const router = express.Router();
 
 router.patch(
   "/api/v1/users/updatepassword",
+  ensureLogin,
   body("newPassword")
     .exists()
     .notEmpty()
@@ -36,7 +37,10 @@ router.patch(
       if (!errors.isEmpty()) {
         throw new RequestValidationError(errors.array());
       }
-      const { id } = req.currentUser!;
+      if (!req.currentUser) {
+        throw new NotAuthorizedError();
+      }
+      const { id } = req.currentUser;
       const user = await User.findById(id);
       if (!user) {
         throw new ResourceNotFoundError();

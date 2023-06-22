@@ -2,7 +2,8 @@ import express, { Request, Response } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
-import { xss } from "express-xss-sanitizer";
+const { xss } = require("express-xss-sanitizer");
+// import { xss } from "express-xss-sanitizer";
 import hpp from "hpp";
 
 import { errorHandler } from "@dongbei/utilities";
@@ -15,6 +16,8 @@ import { resetPasswordRouter } from "./routes/reset-password";
 import { updatePasswordRouter } from "./routes/update-password";
 import { verifyEmailRouter } from "./routes/verify-signup-email";
 import { updateMyUsernameRouter } from "./routes/update-my-username";
+import { updateMyEmailRouter } from "./routes/update-my-email";
+import { verifyEmailChangeRouter } from "./routes/verify-email-change";
 
 const app = express();
 
@@ -42,6 +45,8 @@ app.use(resetPasswordRouter);
 app.use(updatePasswordRouter);
 app.use(verifyEmailRouter);
 app.use(updateMyUsernameRouter);
+app.use(updateMyEmailRouter);
+app.use(verifyEmailChangeRouter);
 
 app.all("*", (req: Request, res: Response) => {
   throw new NotFoundError(req.originalUrl);

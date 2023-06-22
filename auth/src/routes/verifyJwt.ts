@@ -23,10 +23,18 @@ router.get(
           errorMessage: "Not Authorized, User does not exist",
         });
       }
+
+      if (!user.verify) {
+        return res.send({
+          status: "fail",
+          errorMesage: "Not Authorized, User email not verified",
+        });
+      }
+
       if (user.changedPasswordAfterJwt(result.iat!)) {
         return res.send({
           status: "fail",
-          errorMessage: "Not Authorized, Token expired",
+          errorMessage: "Not Authorized, Password Reset Recently",
         });
       }
       return res.send({

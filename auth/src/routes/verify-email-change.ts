@@ -31,8 +31,8 @@ router.get(
       }
       user.email = user.changedEmail;
       user.changedEmail = undefined;
-      user.emailVerifyToken = undefined;
-      user.emailVerifyTokenExpires = undefined;
+      user.changedEmailExpires = undefined;
+      user.changedEmailToken = undefined;
 
       await user.save();
 
@@ -54,3 +54,5 @@ router.get(
     }
   }
 );
+
+export { router as verifyEmailChangeRouter };

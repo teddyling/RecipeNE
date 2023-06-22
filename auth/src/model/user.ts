@@ -33,6 +33,7 @@ interface UserDoc extends mongoose.Document {
   changedEmailToken?: string;
   changedEmailExpires?: Date;
   active: boolean;
+  refreshToken: string;
   changedPasswordAfterJwt: (timestamp: number) => boolean;
   createResetPasswordToken: () => string;
   createEmailVerifyToken: () => string;
@@ -75,10 +76,7 @@ const userSchema = new mongoose.Schema(
     changedEmailToken: String,
     changedEmailExpires: Date,
 
-    active: {
-      type: Boolean,
-      default: true,
-    },
+    refreshToken: String,
   },
   {
     toJSON: {

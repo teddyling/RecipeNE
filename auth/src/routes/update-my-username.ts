@@ -3,6 +3,7 @@ import {
   NotAuthorizedError,
   ResourceNotFoundError,
   RequestValidationError,
+  ensureLogin,
 } from "@dongbei/utilities";
 import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
@@ -12,6 +13,8 @@ const router = express.Router();
 
 router.patch(
   "/api/v1/users/updateme",
+  ensureLogin,
+
   body("username")
     .exists()
     .notEmpty()
