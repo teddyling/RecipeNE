@@ -6,7 +6,7 @@ import { ResourceNotFoundError } from "@dongbei/utilities";
 
 const router = express.Router();
 
-router.get(
+router.patch(
   "/api/v1/users/verifysignup/:token",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -29,6 +29,8 @@ router.get(
       user.emailVerifyToken = undefined;
       user.emailVerifyTokenExpires = undefined;
 
+      const refreshToken = await user.createRefreshToken(user.id);
+
       await user.save();
 
       const token = jwt.sign(
@@ -40,9 +42,21 @@ router.get(
         },
         process.env.JWT_SECRET!,
         {
-          expiresIn: "20m",
+          expiresIn: "10m",
         }
       );
+
+      req.session = {
+        jwt: token,
+      };
+
+      res.cookie("resetToken", refreshToken, {
+        httpOnly: true,
+        signed: true,
+        path: "/api/v1",
+        secure: false,
+      });
+
       res.status(200).send({ token });
     } catch (err) {
       next(err);

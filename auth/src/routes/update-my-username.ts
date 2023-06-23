@@ -3,6 +3,7 @@ import {
   NotAuthorizedError,
   ResourceNotFoundError,
   RequestValidationError,
+  addAuthHeader,
   ensureLogin,
 } from "@dongbei/utilities";
 import express, { NextFunction, Request, Response } from "express";
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.patch(
   "/api/v1/users/updateme",
+  addAuthHeader,
   ensureLogin,
 
   body("username")

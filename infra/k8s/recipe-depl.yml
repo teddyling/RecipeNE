@@ -18,6 +18,11 @@ spec:
           env:
             - name: MONGO_URL
               value: "mongodb://recipe-mongo-srv:27017/recipe?directConnection=true"
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: session-secret
+                  key: SESSION_SECRET
 
 ---
 apiVersion: v1

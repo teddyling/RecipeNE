@@ -51,22 +51,10 @@ router.patch(
       user.password = req.body.password;
       user.passwordResetExpires = undefined;
       user.passwordResetToken = undefined;
-
+      user.refreshToken = undefined;
       await user.save();
 
-      const token = jwt.sign(
-        {
-          id: user.id,
-          role: user.role,
-          username: user.username,
-          email: user.email,
-        },
-        process.env.JWT_SECRET!,
-        {
-          expiresIn: "20m",
-        }
-      );
-      res.status(200).send({ token });
+      res.status(200).send(user);
     } catch (err) {
       next(err);
     }

@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
-import { Password } from "../service/Password";
+import jwt from "jsonwebtoken";
 import crypto from "crypto";
+
+import { Password } from "../service/Password";
+import { RefreshToken } from "../service/RefreshToken";
 
 enum UserRole {
   USER = "user",
@@ -33,11 +36,12 @@ interface UserDoc extends mongoose.Document {
   changedEmailToken?: string;
   changedEmailExpires?: Date;
   active: boolean;
-  refreshToken: string;
+  refreshToken?: string;
   changedPasswordAfterJwt: (timestamp: number) => boolean;
   createResetPasswordToken: () => string;
   createEmailVerifyToken: () => string;
   createChangeEmailToken: () => string;
+  createRefreshToken: (userid: string) => Promise<string>;
 }
 
 const userSchema = new mongoose.Schema(
@@ -137,6 +141,19 @@ userSchema.methods.createChangeEmailToken = function () {
   this.changedEmailExpires = Date.now() + 10 * 60 * 1000;
 
   return changeToken;
+};
+
+userSchema.methods.createRefreshToken = async function (userid: string) {
+  const refreshToken = jwt.sign(
+    { id: userid },
+    process.env.JWT_REFRESH_SECRET!,
+    {
+      expiresIn: "30d",
+    }
+  );
+  const hashedRefreshToken = await RefreshToken.toHash(refreshToken);
+  this.refreshToken = hashedRefreshToken;
+  return refreshToken;
 };
 
 userSchema.pre("save", async function (done) {

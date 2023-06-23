@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../model/user";
 //import { BadRequestError } from "../../utilities/errors/bad-request-error";
 //import { RequestValidationError } from "../../utilities/errors/request-validation-error";
-import { BadRequestError } from "@dongbei/utilities";
+import { BadRequestError, NotAuthorizedError } from "@dongbei/utilities";
 import { RequestValidationError } from "@dongbei/utilities";
 import { Password } from "../service/Password";
 // import { ensureLogin } from "../utilities/middlewares/ensureLogin";
@@ -34,15 +34,19 @@ router.post(
       const { email, password } = req.body;
       const existingUser = await User.findOne({ email });
       if (!existingUser) {
-        throw new BadRequestError("Invalid Credentials");
+        throw new NotAuthorizedError("Invalid Credentials");
       }
       const correctPassword = await Password.compare(
         existingUser.password,
         password
       );
       if (!correctPassword) {
-        throw new BadRequestError("Invalid Credentials");
+        throw new NotAuthorizedError("Invalid Credentials");
       }
+
+      const refreshToken = existingUser.createRefreshToken(existingUser.id);
+      await existingUser.save();
+
       const token = jwt.sign(
         {
           id: existingUser.id,
@@ -52,9 +56,23 @@ router.post(
         },
         process.env.JWT_SECRET!,
         {
-          expiresIn: "20m",
+          expiresIn: "10m",
         }
       );
+
+      console.log(req.session?.jwt);
+
+      req.session = {
+        jwt: token,
+      };
+
+      res.cookie("resetToken", refreshToken, {
+        httpOnly: true,
+        signed: true,
+        path: "/api/v1",
+        secure: false,
+      });
+
       res.status(200).send({
         data: existingUser,
         token: token,

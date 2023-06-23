@@ -1,17 +1,30 @@
 import express, { NextFunction, Request, Response } from "express";
 import { User } from "../model/user";
+import { body, validationResult } from "express-validator";
 import {
   BadRequestError,
   ResourceNotFoundError,
   ServerInternalError,
+  RequestValidationError,
 } from "@dongbei/utilities";
 import { sendEmail } from "@dongbei/utilities";
 const router = express.Router();
 
 router.post(
   "/api/v1/users/forgetpassword",
+  [
+    body("email")
+      .exists()
+      .notEmpty()
+      .isEmail()
+      .withMessage("Please provide a valid email"),
+  ],
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw new RequestValidationError(errors.array());
+      }
       if (!req.body.email) {
         throw new BadRequestError("No user email provided");
       }
@@ -25,7 +38,7 @@ router.post(
 
       const resetURL = `${req.protocol}://authenticdongbei.com/api/v1/users/resetpassword/${resetToken}`;
       const emailSubject = `Your password reset token (valid for 10 min)`;
-      const content = `Send an email to ${resetURL} to reset your password`;
+      const content = `Send an post request to ${resetURL} to reset your password`;
       try {
         await sendEmail(user.email, emailSubject, content);
       } catch (error) {

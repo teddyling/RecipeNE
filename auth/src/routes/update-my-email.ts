@@ -7,6 +7,7 @@ import {
   ResourceNotFoundError,
   ServerInternalError,
   sendEmail,
+  addAuthHeader,
   ensureLogin,
 } from "@dongbei/utilities";
 import { User } from "../model/user";
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.patch(
   "/api/v1/users/updatemyemail",
+  addAuthHeader,
   ensureLogin,
   [
     body("email")

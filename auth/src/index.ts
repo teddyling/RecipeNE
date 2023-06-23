@@ -14,6 +14,18 @@ const start = async () => {
     throw new Error("MONGO_URL is not defined!");
   }
 
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined!");
+  }
+
+  if (!process.env.JWT_REFRESH_SECRET) {
+    throw new Error("JWT_REFRESH_SECRET is not defined!");
+  }
+
+  if (!process.env.SESSION_SECRET) {
+    throw new Error("SESSION_SECRET is not defined!");
+  }
+
   try {
     await mongoose.connect(process.env.MONGO_URL);
     console.log("Connected to MongoDB successfully!");

@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 const { xss } = require("express-xss-sanitizer");
-// import { xss } from "express-xss-sanitizer";
+
 import hpp from "hpp";
 
 import { getAllRecipeRouter } from "./routes/all-recipe";

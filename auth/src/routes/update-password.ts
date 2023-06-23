@@ -7,6 +7,7 @@ import {
   NotAuthorizedError,
   ResourceNotFoundError,
   RequestValidationError,
+  addAuthHeader,
   ensureLogin,
 } from "@dongbei/utilities";
 
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.patch(
   "/api/v1/users/updatepassword",
+  addAuthHeader,
   ensureLogin,
   body("newPassword")
     .exists()
@@ -54,21 +56,12 @@ router.patch(
         throw new NotAuthorizedError("The input previous password is wrong.");
       }
       user.password = newPassword;
+      user.refreshToken = undefined;
       await user.save();
+      req.session = null;
+      res.clearCookie("resetToken", { path: "/api/v1" });
 
-      const token = jwt.sign(
-        {
-          id: user.id,
-          role: user.role,
-          email: user.email,
-          username: user.username,
-        },
-        process.env.JWT_SECRET!,
-        {
-          expiresIn: "20m",
-        }
-      );
-      res.send({ token });
+      res.send(user);
     } catch (err) {
       next(err);
     }

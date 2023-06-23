@@ -71,6 +71,7 @@ router.post(
       });
 
       const verifyToken = newUser.createEmailVerifyToken();
+
       await newUser.save();
 
       const verifyURL = `${req.protocol}://authenticdongbei.com/api/v1/users/verifysignup/${verifyToken}`;
@@ -85,18 +86,6 @@ router.post(
         return next(new ServerInternalError("Failed sending email."));
       }
 
-      // const token = jwt.sign(
-      //   {
-      //     id: newUser.id,
-      //     role: newUser.role,
-      //     username: newUser.username,
-      //     email: newUser.email,
-      //   },
-      //   process.env.JWT_SECRET!,
-      //   {
-      //     expiresIn: "20m",
-      //   }
-      // );
       res.status(200).send({
         data: {
           user: newUser,

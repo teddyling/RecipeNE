@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-router.get(
+router.patch(
   "/api/v1/users/verifyemail/:token",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -33,22 +33,11 @@ router.get(
       user.changedEmail = undefined;
       user.changedEmailExpires = undefined;
       user.changedEmailToken = undefined;
-
+      user.refreshToken = undefined;
       await user.save();
-
-      const token = jwt.sign(
-        {
-          id: user.id,
-          role: user.role,
-          username: user.username,
-          email: user.email,
-        },
-        process.env.JWT_SECRET!,
-        {
-          expiresIn: "20m",
-        }
-      );
-      res.status(200).send({ token });
+      req.session = null;
+      res.clearCookie("resetToken", { path: "/api/v1" });
+      res.status(200).send(user);
     } catch (err) {
       next(err);
     }
