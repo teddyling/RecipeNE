@@ -60,7 +60,7 @@ router.post(
         }
       );
 
-      console.log(req.session?.jwt);
+      //console.log(req.session?.jwt);
 
       req.session = {
         jwt: token,

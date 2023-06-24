@@ -1,14 +1,16 @@
 import express, { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
-import jwt from "jsonwebtoken";
+
 import { User } from "../model/user";
 import { Password } from "../service/Password";
+
 import {
   NotAuthorizedError,
   ResourceNotFoundError,
   RequestValidationError,
   addAuthHeader,
   ensureLogin,
+  client,
 } from "@dongbei/utilities";
 
 const router = express.Router();
@@ -32,7 +34,7 @@ router.patch(
     .withMessage(
       "Password must contain uppercase letters, lowercase letters, and numbers"
     ),
-  ensureLogin,
+
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
@@ -58,6 +60,13 @@ router.patch(
       user.password = newPassword;
       user.refreshToken = undefined;
       await user.save();
+
+      const suspendedJwt = req.session!.jwt;
+      const invalidMiliSecond = req.currentUser.exp! * 1000 - Date.now();
+      await client.set(suspendedJwt, 1, {
+        PX: invalidMiliSecond + 1000,
+      });
+
       req.session = null;
       res.clearCookie("resetToken", { path: "/api/v1" });
 

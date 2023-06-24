@@ -2,6 +2,7 @@ import {
   NotAuthorizedError,
   addAuthHeader,
   ensureLogin,
+  client,
 } from "@dongbei/utilities";
 import express, { Request, Response, NextFunction } from "express";
 import { User } from "../model/user";
@@ -21,6 +22,13 @@ router.post(
       if (!user) {
         throw new NotAuthorizedError();
       }
+
+      const suspendedJwt = req.session!.jwt;
+      const invalidMiliSecond = req.currentUser.exp! * 1000 - Date.now();
+      await client.set(suspendedJwt, 1, {
+        PX: invalidMiliSecond + 1000,
+      });
+
       req.session = null;
       res.clearCookie("resetToken", { path: "/api/v1" });
       user.refreshToken = undefined;

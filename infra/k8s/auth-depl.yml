@@ -18,6 +18,8 @@ spec:
           env:
             - name: MONGO_URL
               value: "mongodb://auth-mongo-srv:27017/auth?directConnection=true"
+            - name: REDIS_URL
+              value: "redis://auth-redis-srv:6379"
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:

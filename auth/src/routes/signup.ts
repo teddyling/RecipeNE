@@ -76,7 +76,7 @@ router.post(
 
       const verifyURL = `${req.protocol}://authenticdongbei.com/api/v1/users/verifysignup/${verifyToken}`;
       const emailSubject = `Your account verification token (valid for 30 min)`;
-      const content = `Send a get request to ${verifyURL} to reset your password`;
+      const content = `An email has been sent to your email account to verify your email. ${verifyURL} `;
       try {
         await sendEmail(newUser.email, emailSubject, content);
       } catch (error) {

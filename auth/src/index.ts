@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+
 import { app } from "./app";
 //import { DatabaseConnectionError } from "../utilities/errors/database-connection-error";
-import { DatabaseConnectionError } from "@dongbei/utilities";
+import { DatabaseConnectionError, client } from "@dongbei/utilities";
 
 const start = async () => {
   process.on("uncaughtException", (err) => {
@@ -12,6 +13,10 @@ const start = async () => {
 
   if (!process.env.MONGO_URL) {
     throw new Error("MONGO_URL is not defined!");
+  }
+
+  if (!process.env.REDIS_URL) {
+    throw new Error("REDIS_URL is not defined!");
   }
 
   if (!process.env.JWT_SECRET) {
@@ -29,6 +34,8 @@ const start = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL);
     console.log("Connected to MongoDB successfully!");
+    await client.connect();
+    console.log("Connected to Redis successfully");
   } catch (err) {
     console.error(err);
     throw new DatabaseConnectionError();

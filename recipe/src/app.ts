@@ -5,7 +5,7 @@ import mongoSanitize from "express-mongo-sanitize";
 const { xss } = require("express-xss-sanitizer");
 
 import hpp from "hpp";
-
+import cookieSession from "cookie-session";
 import { getAllRecipeRouter } from "./routes/all-recipe";
 import { seedRouter } from "./routes/seed-recipe";
 import { mustKnowRouter } from "./routes/must-know";
@@ -34,6 +34,15 @@ app.use(xss());
 app.use(
   hpp({
     whitelist: ["title", "popularity", "category"],
+  })
+);
+
+app.use(
+  cookieSession({
+    httpOnly: true,
+    signed: true,
+    secure: false,
+    secret: process.env.SESSION_SECRET,
   })
 );
 
