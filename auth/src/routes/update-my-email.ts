@@ -9,12 +9,15 @@ import {
   sendEmail,
   addAuthHeader,
   ensureLogin,
+  doubleCsrfUtilities,
 } from "@dongbei/utilities";
 import { User } from "../model/user";
 const router = express.Router();
+const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.patch(
   "/api/v1/users/updatemyemail",
+  doubleCsrfProtection,
   addAuthHeader,
   ensureLogin,
   [

@@ -1,10 +1,15 @@
 import express, { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import {
+  BadRequestError,
+  NotAuthorizedError,
+  doubleCsrfUtilities,
+} from "@dongbei/utilities";
 import { User } from "../model/user";
 //import { BadRequestError } from "../../utilities/errors/bad-request-error";
 //import { RequestValidationError } from "../../utilities/errors/request-validation-error";
-import { BadRequestError, NotAuthorizedError } from "@dongbei/utilities";
+
 import { RequestValidationError } from "@dongbei/utilities";
 import { Password } from "../service/Password";
 // import { ensureLogin } from "../utilities/middlewares/ensureLogin";
@@ -71,11 +76,16 @@ router.post(
         signed: true,
         path: "/api/v1",
         secure: false,
+        sameSite: "lax",
       });
+
+      const { generateToken } = doubleCsrfUtilities;
+      const csrfToken = generateToken(res, req);
 
       res.status(200).send({
         data: existingUser,
         token: token,
+        csrfToken,
       });
     } catch (err) {
       return next(err);

@@ -11,12 +11,16 @@ import {
   addAuthHeader,
   ensureLogin,
   client,
+  doubleCsrfUtilities,
 } from "@dongbei/utilities";
+
+const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 const router = express.Router();
 
 router.patch(
   "/api/v1/users/updatepassword",
+  doubleCsrfProtection,
   addAuthHeader,
   ensureLogin,
   body("newPassword")

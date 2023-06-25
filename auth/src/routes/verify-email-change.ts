@@ -9,13 +9,16 @@ import {
   addAuthHeader,
   ensureLogin,
   client,
+  doubleCsrfUtilities,
 } from "@dongbei/utilities";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
+const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.patch(
   "/api/v1/users/verifyemail/:token",
+  doubleCsrfProtection,
   addAuthHeader,
   ensureLogin,
 

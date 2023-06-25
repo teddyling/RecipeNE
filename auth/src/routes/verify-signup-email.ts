@@ -3,6 +3,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { User } from "../model/user";
 import { ResourceNotFoundError } from "@dongbei/utilities";
+import { doubleCsrfUtilities } from "@dongbei/utilities";
 
 const router = express.Router();
 
@@ -55,9 +56,13 @@ router.patch(
         signed: true,
         path: "/api/v1",
         secure: false,
+        sameSite: "lax",
       });
 
-      res.status(200).send({ token });
+      const { generateToken } = doubleCsrfUtilities;
+      const csrfToken = generateToken(res, req);
+
+      res.status(200).send({ token, csrfToken });
     } catch (err) {
       next(err);
     }

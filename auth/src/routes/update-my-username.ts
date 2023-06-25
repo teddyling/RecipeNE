@@ -5,15 +5,18 @@ import {
   RequestValidationError,
   addAuthHeader,
   ensureLogin,
+  doubleCsrfUtilities,
 } from "@dongbei/utilities";
 import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { User } from "../model/user";
 
 const router = express.Router();
+const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.patch(
   "/api/v1/users/updateme",
+  doubleCsrfProtection,
   addAuthHeader,
   ensureLogin,
 

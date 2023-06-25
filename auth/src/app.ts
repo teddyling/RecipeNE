@@ -7,6 +7,9 @@ const { xss } = require("express-xss-sanitizer");
 import hpp from "hpp";
 import cookieSession from "cookie-session";
 import cookieParser from "cookie-parser";
+
+import { doubleCsrfUtilities } from "@dongbei/utilities";
+
 import { errorHandler } from "@dongbei/utilities";
 import { NotFoundError } from "@dongbei/utilities";
 import { signupRouter } from "./routes/signup";
@@ -45,6 +48,7 @@ app.use(
     signed: true,
     secure: false,
     secret: process.env.SESSION_SECRET,
+    sameSite: "lax",
   })
 );
 
@@ -61,6 +65,7 @@ app.use(updateMyUsernameRouter);
 app.use(updateMyEmailRouter);
 app.use(verifyEmailChangeRouter);
 app.use(signoutRouter);
+// Refresh Token Route has to be implemented
 
 app.all("*", (req: Request, res: Response) => {
   throw new NotFoundError(req.originalUrl);
