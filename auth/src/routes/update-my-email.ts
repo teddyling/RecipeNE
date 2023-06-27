@@ -17,9 +17,10 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.patch(
   "/api/v1/users/updatemyemail",
-  doubleCsrfProtection,
+
   addAuthHeader,
   ensureLogin,
+  doubleCsrfProtection,
   [
     body("email")
       .exists()

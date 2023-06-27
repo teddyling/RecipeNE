@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { app } from "./app";
 // import { DatabaseConnectionError } from "../utilities/errors/database-connection-error";
-import { DatabaseConnectionError } from "@dongbei/utilities";
+import { DatabaseConnectionError, client } from "@dongbei/utilities";
 
 const start = async () => {
   process.on("uncaughtException", (err) => {
@@ -14,6 +14,18 @@ const start = async () => {
     throw new Error("MONGO_URL is not defined!");
   }
 
+  if (!process.env.REDIS_URL) {
+    throw new Error("REDIS_URL is not defined!");
+  }
+
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined!");
+  }
+
+  if (!process.env.JWT_REFRESH_SECRET) {
+    throw new Error("JWT_REFRESH_SECRET is not defined!");
+  }
+
   if (!process.env.SESSION_SECRET) {
     throw new Error("SESSION_SECRET is not defined!");
   }
@@ -21,6 +33,8 @@ const start = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL);
     console.log("Connected to MongoDB successfully!");
+    await client.connect();
+    console.log("Connected to Redis successfully");
   } catch (err) {
     console.error(err);
     throw new DatabaseConnectionError();

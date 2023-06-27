@@ -20,9 +20,11 @@ const router = express.Router();
 
 router.patch(
   "/api/v1/users/updatepassword",
-  doubleCsrfProtection,
+
   addAuthHeader,
   ensureLogin,
+  doubleCsrfProtection,
+
   body("newPassword")
     .exists()
     .notEmpty()

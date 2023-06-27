@@ -1,8 +1,15 @@
 import express, { Request, Response } from "express";
+import {
+  addAuthHeader,
+  ensureAdmin,
+  ensureLogin,
+  doubleCsrfUtilities,
+} from "@dongbei/utilities";
 import { Category } from "../models/recipe-category";
 import { Recipe, RecipeAttrs } from "../models/recipe";
 
 const router = express.Router();
+const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 const recipeSeeds: RecipeAttrs[] = [
   {
@@ -243,25 +250,32 @@ const recipeSeeds: RecipeAttrs[] = [
   },
 ];
 
-router.post("/api/v1/recipes/seeds", async (req, res) => {
-  try {
-    const storedRecipes = await Recipe.find();
+router.post(
+  "/api/v1/recipes/seeds",
+  // doubleCsrfProtection,
+  // addAuthHeader,
+  // ensureLogin,
+  // ensureAdmin,
+  async (req, res) => {
+    try {
+      const storedRecipes = await Recipe.find();
 
-    if (storedRecipes.length === 0) {
-      recipeSeeds.forEach((recipeSeed) => {
-        const buildRecipe = Recipe.build(recipeSeed);
-        buildRecipe.save();
-      });
+      if (storedRecipes.length === 0) {
+        recipeSeeds.forEach((recipeSeed) => {
+          const buildRecipe = Recipe.build(recipeSeed);
+          buildRecipe.save();
+        });
 
-      res.status(200).send({
-        message: "success",
-      });
-    } else {
-      res.send({ message: "DB has already seeded!" });
+        res.status(200).send({
+          message: "success",
+        });
+      } else {
+        res.send({ message: "DB has already seeded!" });
+      }
+    } catch (err) {
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
   }
-});
+);
 
 export { router as seedRouter };

@@ -18,9 +18,10 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.patch(
   "/api/v1/users/verifyemail/:token",
-  doubleCsrfProtection,
+
   addAuthHeader,
   ensureLogin,
+  doubleCsrfProtection,
 
   async (req: Request, res: Response, next: NextFunction) => {
     try {

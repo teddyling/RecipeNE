@@ -6,6 +6,7 @@ const { xss } = require("express-xss-sanitizer");
 
 import hpp from "hpp";
 import cookieSession from "cookie-session";
+import cookieParser from "cookie-parser";
 import { getAllRecipeRouter } from "./routes/all-recipe";
 import { seedRouter } from "./routes/seed-recipe";
 import { mustKnowRouter } from "./routes/must-know";
@@ -43,8 +44,11 @@ app.use(
     signed: true,
     secure: false,
     secret: process.env.SESSION_SECRET,
+    sameSite: "lax",
   })
 );
+
+app.use(cookieParser(process.env.SESSION_SECRET));
 
 app.use(seedRouter);
 app.use(getAllRecipeRouter);

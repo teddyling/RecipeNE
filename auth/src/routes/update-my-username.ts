@@ -16,9 +16,10 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.patch(
   "/api/v1/users/updateme",
-  doubleCsrfProtection,
+
   addAuthHeader,
   ensureLogin,
+  doubleCsrfProtection,
 
   body("username")
     .exists()

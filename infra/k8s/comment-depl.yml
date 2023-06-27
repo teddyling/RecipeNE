@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comment
+  template:
+    metadata:
+      labels:
+        app: comment
+    spec:
+      containers:
+        - name: comment
+          image: lingta/recipecomment
+          env:
+            - name: MONGO_URL
+              value: "mongodb://comment-mongo-srv:27017/comment?directConnection=true"
+            - name: REDIS_URL
+              value: "redis://auth-redis-srv:6379"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET
+            - name: JWT_REFRESH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-refresh-secret
+                  key: JWT_REFRESH_SECRET
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: session-secret
+                  key: SESSION_SECRET
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comment-srv
+spec:
+  selector:
+    app: comment
+  ports:
+    - name: comment
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

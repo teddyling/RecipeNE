@@ -18,6 +18,18 @@ spec:
           env:
             - name: MONGO_URL
               value: "mongodb://recipe-mongo-srv:27017/recipe?directConnection=true"
+            - name: REDIS_URL
+              value: "redis://auth-redis-srv:6379"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET
+            - name: JWT_REFRESH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-refresh-secret
+                  key: JWT_REFRESH_SECRET
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:
