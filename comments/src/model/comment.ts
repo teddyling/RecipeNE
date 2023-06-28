@@ -6,12 +6,14 @@ interface CommentAttrs {
   content: string;
   recipe: RecipeDoc;
   user: UserDoc;
+  createdAt: Date;
 }
 
 interface CommentDoc extends mongoose.Document {
   user: UserDoc;
   content: string;
   recipe: RecipeDoc;
+  createdAt: Date;
 }
 
 interface CommentModel extends mongoose.Model<CommentDoc> {
@@ -33,6 +35,10 @@ const commentSchema = new mongoose.Schema(
     recipe: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Recipe",
+    },
+    createdAt: {
+      type: Date,
+      required: true,
     },
   },
   {

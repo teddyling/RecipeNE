@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import { User } from "../model/user";
 import { ResourceNotFoundError } from "@dongbei/utilities";
 import { doubleCsrfUtilities } from "@dongbei/utilities";
+import { natsWrapper } from "../service/nats-wrapper";
+import { UserCreatedPublisher } from "../events/user-created-publisher";
 
 const router = express.Router();
 
@@ -33,6 +35,11 @@ router.patch(
       const refreshToken = await user.createRefreshToken(user.id);
 
       await user.save();
+      await new UserCreatedPublisher(natsWrapper.client).publish({
+        id: user.id,
+        role: user.role,
+        username: user.username,
+      });
 
       const token = jwt.sign(
         {

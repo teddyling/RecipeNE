@@ -9,6 +9,8 @@ import {
   ensureLogin,
   doubleCsrfUtilities,
 } from "@dongbei/utilities";
+import { RecipeCreatedPublisher } from "../events/recipe-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 // This route is admin only route
 const router = express.Router();
@@ -26,6 +28,11 @@ router.post(
       const recipe = Recipe.build(req.body);
 
       const savedRecipe = await recipe.save();
+
+      await new RecipeCreatedPublisher(natsWrapper.client).publish({
+        id: savedRecipe.id,
+        title: savedRecipe.title,
+      });
 
       res.status(201).send({
         data: {

@@ -8,6 +8,10 @@ import hpp from "hpp";
 import cookieSession from "cookie-session";
 import cookieParser from "cookie-parser";
 
+import { newCommentRouter } from "./routes/new-comment";
+import { allMyCommentRouter } from "./routes/all-my-comment";
+import { allCommentRouter } from "./routes/all-comment";
+
 import { errorHandler } from "@dongbei/utilities";
 import { NotFoundError } from "@dongbei/utilities";
 
@@ -41,9 +45,9 @@ app.use(
 
 app.use(cookieParser(process.env.SESSION_SECRET));
 
-app.get("/api/v1/comments", (req: Request, res: Response) => {
-  res.send("Successfully get to comment service!");
-});
+app.use(newCommentRouter);
+app.use(allCommentRouter);
+app.use(allMyCommentRouter);
 
 app.all("*", (req: Request, res: Response) => {
   throw new NotFoundError(req.originalUrl);

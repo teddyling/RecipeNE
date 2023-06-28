@@ -5,8 +5,10 @@ import {
   ensureLogin,
   doubleCsrfUtilities,
 } from "@dongbei/utilities";
+import { natsWrapper } from "../nats-wrapper";
 import { Category } from "../models/recipe-category";
 import { Recipe, RecipeAttrs } from "../models/recipe";
+import { RecipeCreatedPublisher } from "../events/recipe-created-publisher";
 
 const router = express.Router();
 const { doubleCsrfProtection } = doubleCsrfUtilities;
@@ -261,11 +263,18 @@ router.post(
       const storedRecipes = await Recipe.find();
 
       if (storedRecipes.length === 0) {
-        recipeSeeds.forEach((recipeSeed) => {
-          const buildRecipe = Recipe.build(recipeSeed);
-          buildRecipe.save();
-        });
+        // recipeSeeds.forEach((recipeSeed) => {
+        //   const buildRecipe = Recipe.build(recipeSeed);
+        //   buildRecipe.save().then();
 
+        for (const recipeSeed of recipeSeeds) {
+          const buildRecipe = Recipe.build(recipeSeed);
+          const savedRecipe = await buildRecipe.save();
+          await new RecipeCreatedPublisher(natsWrapper.client).publish({
+            id: savedRecipe.id,
+            title: savedRecipe.title,
+          });
+        }
         res.status(200).send({
           message: "success",
         });
