@@ -25,6 +25,7 @@ import { verifyEmailChangeRouter } from "./routes/verify-email-change";
 import { signoutRouter } from "./routes/signout";
 
 const app = express();
+app.disable("x-powered-by");
 
 const limiter = rateLimit({
   max: 100,

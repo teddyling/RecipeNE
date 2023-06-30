@@ -20,6 +20,7 @@ import { errorHandler } from "@dongbei/utilities";
 import { NotFoundError } from "@dongbei/utilities";
 
 const app = express();
+app.disable("x-powered-by");
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
