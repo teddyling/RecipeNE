@@ -3,11 +3,13 @@ import { Recipe } from "../models/recipe";
 // import { BadRequestError } from "../../utilities/errors/bad-request-error";
 // import { NotFoundError } from "../../utilities/errors/not-found-error";
 import { applyAPIFeature } from "../utilities/functions/apply-api-features";
+import { rateLimitMiddleware } from "@dongbei/utilities";
 
 const router = express.Router();
 
 router.get(
   "/api/v1/recipes",
+  rateLimitMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // // Regular filter

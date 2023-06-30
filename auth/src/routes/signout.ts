@@ -15,7 +15,7 @@ router.post(
   "/api/v1/users/signout",
   addAuthHeader,
   ensureLogin,
-  doubleCsrfProtection,
+  // doubleCsrfProtection,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.currentUser) {

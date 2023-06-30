@@ -6,6 +6,7 @@ import { User } from "../model/user";
 import {
   ResourceNotFoundError,
   RequestValidationError,
+  rateLimitMiddleware,
 } from "@dongbei/utilities";
 
 const router = express.Router();
@@ -13,6 +14,8 @@ const router = express.Router();
 router.patch(
   "/api/v1/users/resetpassword/:token",
   [
+    rateLimitMiddleware,
+
     body("password")
       .exists()
       .notEmpty()

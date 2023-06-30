@@ -27,16 +27,16 @@ import { signoutRouter } from "./routes/signout";
 const app = express();
 app.disable("x-powered-by");
 
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: "To many requests",
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// const limiter = rateLimit({
+//   max: 100,
+//   windowMs: 60 * 60 * 1000,
+//   message: "To many requests",
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
 
 app.use(helmet());
-app.use("/api/v1/users", limiter);
+// app.use("/api/v1/users", limiter);
 
 app.use(express.json({ limit: "1mb" }));
 app.use(mongoSanitize());

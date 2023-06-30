@@ -22,7 +22,7 @@ router.post(
   addAuthHeader,
   ensureLogin,
   ensureAdmin,
-  doubleCsrfProtection,
+  // doubleCsrfProtection,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const recipe = Recipe.build(req.body);

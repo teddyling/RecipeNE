@@ -10,6 +10,7 @@ import {
   addAuthHeader,
   ensureLogin,
   doubleCsrfUtilities,
+  rateLimitMiddleware,
 } from "@dongbei/utilities";
 import { User } from "../model/user";
 const router = express.Router();
@@ -20,7 +21,8 @@ router.patch(
 
   addAuthHeader,
   ensureLogin,
-  doubleCsrfProtection,
+  rateLimitMiddleware,
+  //doubleCsrfProtection,
   [
     body("email")
       .exists()

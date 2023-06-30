@@ -4,6 +4,8 @@ import { User } from "../model/user";
 
 const router = express.Router();
 
+// Admin route
+
 router.get(
   "/api/v1/users",
   (req: Request, res: Response, next: NextFunction) => {

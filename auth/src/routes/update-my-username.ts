@@ -6,6 +6,7 @@ import {
   addAuthHeader,
   ensureLogin,
   doubleCsrfUtilities,
+  rateLimitMiddleware,
 } from "@dongbei/utilities";
 import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
@@ -19,7 +20,8 @@ router.patch(
 
   addAuthHeader,
   ensureLogin,
-  doubleCsrfProtection,
+  rateLimitMiddleware,
+  // doubleCsrfProtection,
 
   body("username")
     .exists()

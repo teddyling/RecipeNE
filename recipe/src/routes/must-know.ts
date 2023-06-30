@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { applyAPIFeature } from "../utilities/functions/apply-api-features";
+import { rateLimitMiddleware } from "@dongbei/utilities";
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ const getAllMustKnow = (req: Request, res: Response, next: NextFunction) => {
 router.get(
   "/api/v1/recipes/must-know",
   getAllMustKnow,
+  rateLimitMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const query = applyAPIFeature(req);

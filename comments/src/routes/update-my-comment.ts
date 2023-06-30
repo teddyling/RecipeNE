@@ -4,6 +4,9 @@ import {
   NotAuthorizedError,
   ResourceNotFoundError,
   ForbiddenError,
+  addAuthHeader,
+  ensureLogin,
+  rateLimitMiddleware,
 } from "@dongbei/utilities";
 import express, { Request, Response, NextFunction } from "express";
 import { Comment } from "../model/comment";
@@ -12,6 +15,10 @@ const router = express.Router();
 
 router.patch(
   "/api/v1/comments/mycomments/:commentId",
+  addAuthHeader,
+  ensureLogin,
+  rateLimitMiddleware,
+
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.currentUser) {

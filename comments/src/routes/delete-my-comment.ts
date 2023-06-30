@@ -5,6 +5,7 @@ import {
   ResourceNotFoundError,
   addAuthHeader,
   ensureLogin,
+  rateLimitMiddleware,
 } from "@dongbei/utilities";
 import express, { Request, Response, NextFunction } from "express";
 import { Comment } from "../model/comment";
@@ -15,6 +16,7 @@ router.delete(
   "/api/v1/comments/mycomments/:commentId",
   addAuthHeader,
   ensureLogin,
+  rateLimitMiddleware,
 
   async (req: Request, res: Response, next: NextFunction) => {
     try {

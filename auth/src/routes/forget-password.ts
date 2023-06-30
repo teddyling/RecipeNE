@@ -6,6 +6,7 @@ import {
   ResourceNotFoundError,
   ServerInternalError,
   RequestValidationError,
+  rateLimitMiddleware,
 } from "@dongbei/utilities";
 import { sendEmail } from "@dongbei/utilities";
 const router = express.Router();
@@ -13,6 +14,8 @@ const router = express.Router();
 router.post(
   "/api/v1/users/forgetpassword",
   [
+    rateLimitMiddleware,
+
     body("email")
       .exists()
       .notEmpty()

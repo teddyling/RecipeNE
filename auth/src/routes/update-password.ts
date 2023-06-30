@@ -12,6 +12,7 @@ import {
   ensureLogin,
   client,
   doubleCsrfUtilities,
+  rateLimitMiddleware,
 } from "@dongbei/utilities";
 
 const { doubleCsrfProtection } = doubleCsrfUtilities;
@@ -23,7 +24,8 @@ router.patch(
 
   addAuthHeader,
   ensureLogin,
-  doubleCsrfProtection,
+  rateLimitMiddleware,
+  // doubleCsrfProtection,
 
   body("newPassword")
     .exists()

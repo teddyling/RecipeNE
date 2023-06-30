@@ -4,6 +4,7 @@ import {
   ResourceNotFoundError,
   addAuthHeader,
   ensureLogin,
+  rateLimitMiddleware,
 } from "@dongbei/utilities";
 import express, { Request, Response, NextFunction } from "express";
 import { User } from "../model/user";
@@ -18,6 +19,7 @@ router.post(
   "/api/v1/comments",
   addAuthHeader,
   ensureLogin,
+  rateLimitMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.currentUser) {

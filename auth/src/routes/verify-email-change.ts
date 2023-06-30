@@ -21,7 +21,7 @@ router.patch(
 
   addAuthHeader,
   ensureLogin,
-  doubleCsrfProtection,
+  // doubleCsrfProtection,
 
   async (req: Request, res: Response, next: NextFunction) => {
     try {
