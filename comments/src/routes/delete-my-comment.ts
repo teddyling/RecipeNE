@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.delete(
   "/api/v1/comments/mycomments/:commentId",
-  addAuthHeader,
+  // addAuthHeader,
   ensureLogin,
   rateLimitMiddleware,
 

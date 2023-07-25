@@ -22,7 +22,6 @@ const router = express.Router();
 router.patch(
   "/api/v1/users/updatepassword",
 
-  addAuthHeader,
   ensureLogin,
   rateLimitMiddleware,
   // doubleCsrfProtection,
@@ -71,12 +70,9 @@ router.patch(
 
       const suspendedJwt = req.session!.jwt;
       const invalidMiliSecond = req.currentUser.exp! * 1000 - Date.now();
-      await client.set(suspendedJwt, 1, {
+      await client.v4.set(suspendedJwt, 1, {
         PX: invalidMiliSecond + 1000,
       });
-
-      req.session = null;
-      res.clearCookie("resetToken", { path: "/api/v1" });
 
       res.send(user);
     } catch (err) {

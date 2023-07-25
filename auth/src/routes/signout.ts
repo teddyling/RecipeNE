@@ -13,7 +13,7 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.post(
   "/api/v1/users/signout",
-  addAuthHeader,
+  // addAuthHeader,
   ensureLogin,
   // doubleCsrfProtection,
   async (req: Request, res: Response, next: NextFunction) => {
@@ -34,12 +34,13 @@ router.post(
 
       const suspendedJwt = req.session!.jwt;
       const invalidMiliSecond = req.currentUser.exp! * 1000 - Date.now();
-      await client.set(suspendedJwt, 1, {
+      await client.v4.set(suspendedJwt, 1, {
         PX: invalidMiliSecond + 1000,
       });
 
       req.session = null;
-      res.clearCookie("resetToken", { path: "/api/v1" });
+      res.clearCookie("resetToken");
+      res.clearCookie("csrf-token");
 
       res.status(204).send(null);
     } catch (err) {

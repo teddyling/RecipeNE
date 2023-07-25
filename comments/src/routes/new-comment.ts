@@ -17,7 +17,7 @@ const router = express.Router();
 
 router.post(
   "/api/v1/comments",
-  addAuthHeader,
+  // addAuthHeader,
   ensureLogin,
   rateLimitMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
@@ -48,14 +48,10 @@ router.post(
         createdAt: new Date(),
       });
 
-      await comment.save();
+      const savedComments = await comment.save();
 
       res.status(201).send({
-        data: {
-          comment: req.body.comment,
-          user: user,
-          recipe: recipe,
-        },
+        comment: savedComments,
       });
     } catch (err) {
       return next(err);

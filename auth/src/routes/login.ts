@@ -13,7 +13,6 @@ import {
 } from "@dongbei/utilities";
 import { User } from "../model/user";
 import { Password } from "../service/Password";
-import e from "express";
 
 // const protectLoginRedisClient = createClient({
 //   legacyMode: true,
@@ -145,7 +144,7 @@ router.post(
         },
         process.env.JWT_SECRET!,
         {
-          expiresIn: "10m",
+          expiresIn: "30m",
         }
       );
 
@@ -153,12 +152,13 @@ router.post(
 
       req.session = {
         jwt: token,
+        // refreshToken,
       };
 
       res.cookie("resetToken", refreshToken, {
         httpOnly: true,
         signed: true,
-        path: "/api/v1",
+        // path: "/api/v1",
         secure: false,
         sameSite: "lax",
       });

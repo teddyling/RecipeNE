@@ -8,16 +8,18 @@ import hpp from "hpp";
 import cookieSession from "cookie-session";
 import cookieParser from "cookie-parser";
 import { getAllRecipeRouter } from "./routes/all-recipe";
-import { seedRouter } from "./routes/seed-recipe";
+// import { seedRouter } from "./routes/seed-recipe";
 import { mustKnowRouter } from "./routes/must-know";
 import { getOneRecipeRouter } from "./routes/one-recipe";
 import { createNewRecipeRouter } from "./routes/new-recipe";
 import { updateRecipeRouter } from "./routes/update-recipe";
 import { deleteRecipeRouter } from "./routes/delete-recipe";
+import { getOneRecipeBySlugRouter } from "./routes/one-recipe-by-slug";
 // import { errorHandler } from "../utilities/middlewares/error-handler";
 // import { NotFoundError } from "../utilities/errors/not-found-error";
 import { errorHandler } from "@dongbei/utilities";
 import { NotFoundError } from "@dongbei/utilities";
+import { mayAlsoLikeRouter } from "./routes/get-random-recipes";
 
 const app = express();
 app.disable("x-powered-by");
@@ -42,8 +44,8 @@ app.use(
 app.use(
   cookieSession({
     httpOnly: true,
-    signed: true,
-    secure: false,
+    signed: false,
+
     secret: process.env.SESSION_SECRET,
     sameSite: "lax",
   })
@@ -51,13 +53,15 @@ app.use(
 
 app.use(cookieParser(process.env.SESSION_SECRET));
 
-app.use(seedRouter);
+// app.use(seedRouter);
 app.use(getAllRecipeRouter);
 app.use(mustKnowRouter);
+app.use(mayAlsoLikeRouter);
 app.use(getOneRecipeRouter);
 app.use(createNewRecipeRouter);
 app.use(updateRecipeRouter);
 app.use(deleteRecipeRouter);
+app.use(getOneRecipeBySlugRouter);
 
 app.all("*", (req: Request, res: Response) => {
   throw new NotFoundError(req.originalUrl);

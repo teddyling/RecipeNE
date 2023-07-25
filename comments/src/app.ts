@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import { newCommentRouter } from "./routes/new-comment";
 import { allMyCommentRouter } from "./routes/all-my-comment";
 import { allCommentRouter } from "./routes/all-comment";
+import { getCommentsByRecipeRouter } from "./routes/get-recipe-comment";
 
 import { errorHandler } from "@dongbei/utilities";
 import { NotFoundError } from "@dongbei/utilities";
@@ -37,8 +38,8 @@ app.use(hpp());
 app.use(
   cookieSession({
     httpOnly: true,
-    signed: true,
-    secure: false,
+    signed: false,
+
     secret: process.env.SESSION_SECRET,
     sameSite: "lax",
   })
@@ -49,6 +50,7 @@ app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(newCommentRouter);
 app.use(allCommentRouter);
 app.use(allMyCommentRouter);
+app.use(getCommentsByRecipeRouter);
 
 app.all("*", (req: Request, res: Response) => {
   throw new NotFoundError(req.originalUrl);

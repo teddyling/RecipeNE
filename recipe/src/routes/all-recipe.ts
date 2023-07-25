@@ -12,54 +12,45 @@ router.get(
   rateLimitMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // // Regular filter
-      // const queryObj = { ...req.query };
-      // const excludedFields = ["page", "sort", "limit", "fields"];
-      // excludedFields.forEach((ele) => delete queryObj[ele]);
-
-      // // Advance filter, add greater than (equal) and less than (equal)
-      // let queryStr = JSON.stringify(queryObj);
-      // queryStr = queryStr.replace(
-      //   /\b(gte|gt|lte|lt)\b/g,
-      //   (match) => `$${match}`
-      // );
-
-      // let query = Recipe.find(JSON.parse(queryStr));
-
-      // // Sorting
-      // if (req.query.sort) {
-      //   query = query.sort(req.query.sort as string);
-      // }
-
-      // // Field Limiting
-      // if (req.query.fields) {
-      //   const fields = (req.query.fields as string).split(",").join(" ");
-      //   query = query.select(fields);
-      // }
-
-      // // Pagination
-      // let page = 1;
-      // if (req.query.page) {
-      //   page = +req.query.page;
-      // }
-      // let limit = 1000;
-      // if (req.query.limit) {
-      //   limit = +req.query.limit;
-      // }
-      // const skip = (page - 1) * limit;
-
-      // if (skip >= (await Recipe.countDocuments())) {
-      //   throw new NotFoundError();
-      // }
-      // query = query.skip(skip).limit(limit);
-      const query = applyAPIFeature(req);
+      let query = applyAPIFeature(req);
 
       const recipes = await query;
+      const recipeCount = recipes.length;
+
+      // Pagination
+      let page = 1;
+      if (req.query.page) {
+        page = +req.query.page;
+      }
+      let limit = 12;
+      if (req.query.limit) {
+        limit = +req.query.limit;
+      }
+      let skip = (page - 1) * limit;
+
+      if (skip >= (await Recipe.countDocuments())) {
+        skip = 0;
+      }
+      query = query.skip(skip).limit(limit);
+      const pagedRecipe = await query.clone();
+
+      const returnedRecipes = pagedRecipe.map((recipe) => {
+        return {
+          title: recipe.title,
+          popularity: recipe.popularity,
+          difficulity: recipe.difficulity,
+          category: recipe.category,
+          id: recipe.id,
+          slug: recipe.slug,
+          image: recipe.image,
+          type: recipe.type,
+        };
+      });
 
       res.status(200).send({
-        data: {
-          recipes: recipes,
-        },
+        page: req.query.page ? +req.query.page : 1,
+        length: recipeCount,
+        recipes: returnedRecipes,
       });
     } catch (err) {
       next(err);

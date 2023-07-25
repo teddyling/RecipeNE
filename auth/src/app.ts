@@ -23,6 +23,10 @@ import { updateMyUsernameRouter } from "./routes/update-my-username";
 import { updateMyEmailRouter } from "./routes/update-my-email";
 import { verifyEmailChangeRouter } from "./routes/verify-email-change";
 import { signoutRouter } from "./routes/signout";
+import { currentUserRouter } from "./routes/current-user";
+import { refreshTokenRouter } from "./routes/refresh-token";
+import { getAllUsersRouter } from "./routes/all-user";
+import { resendemailRouter } from "./routes/resend-email";
 
 const app = express();
 app.disable("x-powered-by");
@@ -46,8 +50,8 @@ app.use(hpp());
 app.use(
   cookieSession({
     httpOnly: true,
-    signed: true,
-    secure: false,
+    signed: false,
+
     secret: process.env.SESSION_SECRET,
     sameSite: "lax",
   })
@@ -62,10 +66,14 @@ app.use(forgetPasswordRouter);
 app.use(resetPasswordRouter);
 app.use(updatePasswordRouter);
 app.use(verifyEmailRouter);
+app.use(resendemailRouter);
 app.use(updateMyUsernameRouter);
 app.use(updateMyEmailRouter);
 app.use(verifyEmailChangeRouter);
 app.use(signoutRouter);
+app.use(currentUserRouter);
+app.use(refreshTokenRouter);
+app.use(getAllUsersRouter);
 // Refresh Token Route has to be implemented
 
 app.all("*", (req: Request, res: Response) => {

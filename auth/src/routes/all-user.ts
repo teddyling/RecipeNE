@@ -8,14 +8,16 @@ const router = express.Router();
 
 router.get(
   "/api/v1/users",
-  (req: Request, res: Response, next: NextFunction) => {
-    if (!req.currentUser || req.currentUser.role !== "admin") {
-      throw new NotAuthorizedError();
-    }
+  async (req: Request, res: Response, next: NextFunction) => {
+    // if (!req.currentUser || req.currentUser.role !== "admin") {
+    //   throw new NotAuthorizedError();
+    // }
 
-    const users = User.find();
+    const users = await User.find();
     res.status(200).send({
       data: users,
     });
   }
 );
+
+export { router as getAllUsersRouter };

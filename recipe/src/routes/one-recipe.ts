@@ -19,9 +19,7 @@ router.get(
       }
 
       res.send({
-        data: {
-          recipe: foundRecipe,
-        },
+        recipe: foundRecipe,
       });
     } catch (err) {
       next(err);

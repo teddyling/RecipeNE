@@ -18,7 +18,7 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 router.patch(
   "/api/v1/users/updateme",
 
-  addAuthHeader,
+  // addAuthHeader,
   ensureLogin,
   rateLimitMiddleware,
   // doubleCsrfProtection,
@@ -62,9 +62,7 @@ router.patch(
       }
 
       res.status(200).send({
-        data: {
-          user: updateUser,
-        },
+        user: updateUser,
       });
     } catch (err) {
       next(err);

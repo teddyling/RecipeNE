@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get(
   "/api/v1/comments/mycomments",
-  addAuthHeader,
+  // addAuthHeader,
   ensureLogin,
   rateLimitMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
@@ -30,11 +30,9 @@ router.get(
         throw new ResourceNotFoundError();
       }
 
-      const comments = await Comment.find({ user: user.id });
+      const comments = await Comment.find({ user: user.id }).populate("recipe");
       res.status(200).send({
-        data: {
-          comments,
-        },
+        comments,
       });
     } catch (err) {
       return next(err);

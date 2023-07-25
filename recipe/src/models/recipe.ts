@@ -13,14 +13,17 @@ recipe video url: string
 
 import mongoose from "mongoose";
 import slugify from "slugify";
-import { Category } from "./recipe-category";
+import { Category, Type } from "./recipe-category";
 interface RecipeAttrs {
   title: string;
   description: string;
+  difficulity: number;
+  image: string;
   ingredients: string[];
   steps: string[];
   popularity: number;
-  category: Category[];
+  category: Category;
+  type: Type;
   recipe_provider_name: string;
   recipe_provider_url: string;
   recipe_video_url: string;
@@ -30,11 +33,14 @@ interface RecipeAttrs {
 interface RecipeDoc extends mongoose.Document {
   title: string;
   description: string;
+  difficulity: number;
+  image: string;
   popularity: number;
   slug: string;
   ingredients: string[];
   steps: string[];
-  category: Category[];
+  category: Category;
+  type: Type;
   recipe_provider_name: string;
   recipe_provider_url: string;
   recipe_video_url: string;
@@ -55,10 +61,16 @@ const recipeSchema = new mongoose.Schema(
       minlength: 5,
       trim: true,
     },
-    description: String,
+    description: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
     slug: {
       type: String,
-      select: false,
     },
     popularity: {
       type: Number,
@@ -74,29 +86,36 @@ const recipeSchema = new mongoose.Schema(
       type: [String],
       required: [true, "A recipe must have a steps specified!"],
     },
+    difficulity: {
+      type: Number,
+      requied: [true, "A recipe must have a difficulity"],
+      max: 5,
+      min: 1,
+    },
     category: {
-      type: [
-        {
-          type: String,
-          enum: [
-            Category.APPETIZER,
-            Category.BEEF,
-            Category.CHICKEN,
-            Category.DESSERT,
-            Category.FISH,
-            Category.LAMB,
-            Category.MAIN_DISH,
-            Category.NOODLE,
-            Category.PORK,
-            Category.RICE,
-            Category.SEAFOOD,
-            Category.SIDE_DISH,
-            Category.SOUP,
-            Category.SOY,
-            Category.VEGAN_FRIENDLY,
-            Category.VEGETABLE,
-          ],
-        },
+      type: String,
+      enum: [
+        Category.BEEF,
+        Category.CHICKEN,
+
+        Category.FISH,
+        Category.LAMB,
+        Category.NOODLE,
+        Category.PORK,
+        Category.RICE,
+        Category.SEAFOOD,
+        Category.SOY,
+        Category.VEGETABLE,
+      ],
+    },
+    type: {
+      type: String,
+      enum: [
+        Type.APPETIZER,
+        Type.MAIN_DISH,
+        Type.SIDE_DISH,
+        Type.SOUP,
+        Type.DESSERT,
       ],
     },
     recipe_provider_name: String,
@@ -105,7 +124,6 @@ const recipeSchema = new mongoose.Schema(
     must_know: {
       type: Boolean,
       default: false,
-      select: false,
     },
   },
   {

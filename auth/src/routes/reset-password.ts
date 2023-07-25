@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.patch(
+router.post(
   "/api/v1/users/resetpassword/:token",
   [
     rateLimitMiddleware,

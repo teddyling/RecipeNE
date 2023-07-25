@@ -11,7 +11,7 @@ const router = express.Router();
 // Only admins can get all comments
 router.get(
   "/api/v1/comments",
-  addAuthHeader,
+  // addAuthHeader,
   ensureLogin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {

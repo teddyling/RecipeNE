@@ -148,7 +148,7 @@ userSchema.methods.createRefreshToken = async function (userid: string) {
     { id: userid },
     process.env.JWT_REFRESH_SECRET!,
     {
-      expiresIn: "30d",
+      expiresIn: "14d",
     }
   );
   const hashedRefreshToken = await RefreshToken.toHash(refreshToken);

@@ -9,7 +9,7 @@ import { UserCreatedPublisher } from "../events/user-created-publisher";
 
 const router = express.Router();
 
-router.patch(
+router.get(
   "/api/v1/users/verifysignup/:token",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -50,26 +50,28 @@ router.patch(
         },
         process.env.JWT_SECRET!,
         {
-          expiresIn: "10m",
+          expiresIn: "30m",
         }
       );
 
       req.session = {
         jwt: token,
+        // refreshToken,
       };
 
       res.cookie("resetToken", refreshToken, {
         httpOnly: true,
         signed: true,
-        path: "/api/v1",
+        // path: "/api/v1",
         secure: false,
         sameSite: "lax",
       });
 
       const { generateToken } = doubleCsrfUtilities;
       const csrfToken = generateToken(res, req);
+      res.redirect("/redirect/signup");
 
-      res.status(200).send({ token, csrfToken });
+      // res.status(200).send({ token, csrfToken });
     } catch (err) {
       next(err);
     }

@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.patch(
   "/api/v1/comments/:commentId",
-  addAuthHeader,
+  // addAuthHeader,
   ensureLogin,
   ensureAdmin,
   async (req: Request, res: Response, next: NextFunction) => {

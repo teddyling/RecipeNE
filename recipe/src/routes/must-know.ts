@@ -22,8 +22,20 @@ router.get(
     try {
       const query = applyAPIFeature(req);
       const recipes = await query;
+      const returnedRecipes = recipes.map((recipe) => {
+        return {
+          title: recipe.title,
+          popularity: recipe.popularity,
+          difficulity: recipe.difficulity,
+          category: recipe.category,
+          id: recipe.id,
+          slug: recipe.slug,
+          image: recipe.image,
+          type: recipe.type,
+        };
+      });
       res.status(200).send({
-        recipes,
+        recipes: returnedRecipes,
       });
     } catch (err) {
       next(err);

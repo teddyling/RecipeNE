@@ -3,6 +3,9 @@ import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
 // import { DatabaseConnectionError } from "../utilities/errors/database-connection-error";
 import { DatabaseConnectionError, client } from "@dongbei/utilities";
+import { seeds } from "./recipeSeeds";
+import { Recipe } from "./models/recipe";
+import { RecipeCreatedPublisher } from "./events/recipe-created-publisher";
 
 const start = async () => {
   process.on("uncaughtException", (err) => {
@@ -54,6 +57,20 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
     await mongoose.connect(process.env.MONGO_URL);
     console.log("Connected to MongoDB successfully!");
+    if (
+      (await mongoose.connection.db.collection("recipe").countDocuments()) === 0
+    ) {
+      for (let seed of seeds) {
+        const recipe = Recipe.build(seed);
+        const savedRecipe = await recipe.save();
+        await new RecipeCreatedPublisher(natsWrapper.client).publish({
+          id: savedRecipe.id,
+          title: savedRecipe.title,
+        });
+      }
+      console.log("DB Seeded successfully");
+    }
+
     await client.connect();
     console.log("Connected to Redis successfully");
   } catch (err) {
