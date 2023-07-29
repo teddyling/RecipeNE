@@ -529,7 +529,7 @@ export async function getServerSideProps(context) {
   const mainIngredient = context.query["main-ingredient"];
   const dishType = context.query["dish-type"];
   const pageNumber = context.query.page || 1;
-  let baseURL = `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/recipes`;
+  let baseURL = `http://www.recipe-ne.com/api/v1/recipes`;
 
   if (sortOrder || mainIngredient || dishType || pageNumber) {
     baseURL += "?";
@@ -556,7 +556,7 @@ export async function getServerSideProps(context) {
 
   const recipeResponse = await axios.get(fullURL, {
     headers: {
-      Host: "recipe-ne.com",
+      Host: "www.recipe-ne.com",
     },
   });
 
