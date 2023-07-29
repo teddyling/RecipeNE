@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import axios from "axios";
+import { globalErrorContext } from "@/components/GlobalError";
+import Head from "next/head";
 
 const Signup = () => {
   const router = useRouter();
@@ -22,6 +24,7 @@ const Signup = () => {
   const [IsLoading, setIsLoading] = useState(false);
 
   const [successAndRedirect, setSuccessAndRedirect] = useState(false);
+  const { showError } = useContext(globalErrorContext);
   // const [successRedirectTime, setSuccessRedirectTime] = useState(6);
 
   // Check if input email is valid
@@ -31,7 +34,6 @@ const Signup = () => {
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (re.test(inputEmail)) {
         setInputEmailValid(true);
-        console.log("valid Email");
       } else if (inputEmail.length === 0) {
         setInputEmailValid(null);
       } else {
@@ -53,7 +55,6 @@ const Signup = () => {
         !re.test(inputUsername)
       ) {
         setInputUsernameValid(true);
-        console.log("valid Username");
       } else if (inputUsername.length === 0) {
         setInputUsernameValid(null);
       } else {
@@ -77,7 +78,6 @@ const Signup = () => {
         number
       ) {
         setInputPasswordValid(true);
-        console.log("valid Password");
       } else if (inputPassword.length === 0) {
         setInputPasswordValid(null);
       } else {
@@ -92,32 +92,18 @@ const Signup = () => {
   useEffect(() => {
     if (inputEmailValid && inputPasswordValid && inputUsernameValid) {
       setFormValid(true);
-      console.log("form valid");
     } else {
       setFormValid(false);
     }
   }, [inputEmailValid, inputPasswordValid, inputUsernameValid]);
 
-  // useEffect(() => {
-  //   if (successAndRedirect) {
-  //     if (successRedirectTime <= 0) {
-  //       router.push("/");
-  //     } else {
-  //       setTimeout(() => {
-  //         setSuccessRedirectTime((prev) => prev - 1);
-  //       }, 1000);
-  //     }
-  //   }
-  // }, [successAndRedirect, successRedirectTime]);
-  // console.log(successRedirectTime);
-
   const onFormSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setFormValid(false);
-    console.log(inputEmail, inputUsername, inputPassword);
+
     await axios
-      .post("http://authenticdongbei.com/api/v1/users/signup", {
+      .post("http://recipe-ne.com/api/v1/users/signup", {
         username: inputUsername,
         email: inputEmail,
         password: inputPassword,
@@ -135,7 +121,6 @@ const Signup = () => {
           error.response.data.errors[0].message ===
           "The email is already in use!"
         ) {
-          console.log("email in use");
           setInputEmailValid(false);
           setEmailInUse(true);
         } else if (
@@ -145,17 +130,25 @@ const Signup = () => {
           setInputUsernameValid(false);
           setUsernameInUse(true);
         } else {
-          console.log("Internal Error");
+          showError();
         }
-        console.error(error);
       });
   };
 
   return (
-    <div className="flex min-h-full flex-1">
-      <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-        <div className="mx-auto w-full max-w-sm lg:w-96">
-          {/* {successAndRedirect && (
+    <>
+      <Head>
+        <title>Signup</title>
+        <meta
+          name="description"
+          content="
+          Singup page"
+        ></meta>
+      </Head>
+      <div className="flex min-h-full flex-1">
+        <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+          <div className="mx-auto w-full max-w-sm lg:w-96">
+            {/* {successAndRedirect && (
             <div className="rounded-md bg-yellow-200 p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
@@ -179,189 +172,189 @@ const Signup = () => {
               </div>
             </div>
           )} */}
-          <div>
-            <Link href="/">
-              <img
-                className="h-10 w-auto"
-                src="/signup-login-logo.png"
-                alt="website logo"
-              />
-            </Link>
-            <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Create your RecipeNE account
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-gray-500">
-              {/* Not a member?{" "}
+            <div>
+              <Link href="/">
+                <img
+                  className="h-10 w-auto"
+                  src="/signup-login-logo.png"
+                  alt="website logo"
+                />
+              </Link>
+              <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                Create your RecipeNE account
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-gray-500">
+                {/* Not a member?{" "}
               <a
                 href="#"
                 className="font-semibold text-indigo-600 hover:text-indigo-500"
               >
                 Start a 14 day free trial
               </a> */}
-            </p>
-          </div>
+              </p>
+            </div>
 
-          <div className="mt-10">
-            <div>
-              <form className="space-y-6" onSubmit={onFormSubmit} noValidate>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-md font-medium leading-6 text-gray-900"
-                  >
-                    Email address
-                  </label>
-                  <div className="relative mt-2">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      value={inputEmail}
-                      onChange={(e) => {
-                        setInputEmail(e.target.value);
-                      }}
-                      required
-                      className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6 ${
-                        inputEmailValid === false
-                          ? "ring-red-500"
-                          : inputEmailValid === true
-                          ? "ring-green-400"
-                          : ""
-                      }`}
-                    />
-                    <div
-                      className={`pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 ${
-                        inputEmailValid === false ? "" : "invisible"
-                      }`}
+            <div className="mt-10">
+              <div>
+                <form className="space-y-6" onSubmit={onFormSubmit} noValidate>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-md font-medium leading-6 text-gray-900"
                     >
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-500"
-                        aria-hidden="true"
+                      Email address
+                    </label>
+                    <div className="relative mt-2">
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        value={inputEmail}
+                        onChange={(e) => {
+                          setInputEmail(e.target.value);
+                        }}
+                        required
+                        className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6 ${
+                          inputEmailValid === false
+                            ? "ring-red-500"
+                            : inputEmailValid === true
+                            ? "ring-green-400"
+                            : ""
+                        }`}
                       />
+                      <div
+                        className={`pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 ${
+                          inputEmailValid === false ? "" : "invisible"
+                        }`}
+                      >
+                        <ExclamationCircleIcon
+                          className="h-5 w-5 text-red-500"
+                          aria-hidden="true"
+                        />
+                      </div>
                     </div>
+                    <p
+                      className={`mt-1 text-sm ${
+                        inputEmailValid ? `text-green-600` : `text-red-600`
+                      } ${inputEmailValid === null ? "invisible" : ""}`}
+                    >
+                      {!inputEmailValid
+                        ? emailInUse
+                          ? `The email is already associated with an account`
+                          : `Not a valid email address.`
+                        : `Looks great!`}
+                    </p>
                   </div>
-                  <p
-                    className={`mt-1 text-sm ${
-                      inputEmailValid ? `text-green-600` : `text-red-600`
-                    } ${inputEmailValid === null ? "invisible" : ""}`}
-                  >
-                    {!inputEmailValid
-                      ? emailInUse
-                        ? `The email is already associated with an account`
-                        : `Not a valid email address.`
-                      : `Looks great!`}
-                  </p>
-                </div>
 
-                <div>
-                  <label
-                    htmlFor="username"
-                    className="block text-md font-medium leading-6 text-gray-900"
-                  >
-                    Username
-                  </label>
-                  <div className="relative mt-2">
-                    <input
-                      id="username"
-                      name="username"
-                      type="text"
-                      autoComplete="username"
-                      required
-                      value={inputUsername}
-                      onChange={(e) => setInputUsername(e.target.value)}
-                      className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6 ${
+                  <div>
+                    <label
+                      htmlFor="username"
+                      className="block text-md font-medium leading-6 text-gray-900"
+                    >
+                      Username
+                    </label>
+                    <div className="relative mt-2">
+                      <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autoComplete="username"
+                        required
+                        value={inputUsername}
+                        onChange={(e) => setInputUsername(e.target.value)}
+                        className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6 ${
+                          inputUsernameValid === false
+                            ? "ring-red-500"
+                            : inputUsernameValid === true
+                            ? "ring-green-400"
+                            : ""
+                        }`}
+                      />
+                      <div
+                        className={`pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 ${
+                          inputUsernameValid === false ? "" : "invisible"
+                        }`}
+                      >
+                        <ExclamationCircleIcon
+                          className="h-5 w-5 text-red-500"
+                          aria-hidden="true"
+                        />
+                      </div>
+                    </div>
+                    <p
+                      className={`mt-1 text-sm ${
                         inputUsernameValid === false
-                          ? "ring-red-500"
-                          : inputUsernameValid === true
-                          ? "ring-green-400"
-                          : ""
-                      }`}
-                    />
-                    <div
-                      className={`pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 ${
-                        inputUsernameValid === false ? "" : "invisible"
-                      }`}
-                    >
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-500"
-                        aria-hidden="true"
-                      />
-                    </div>
-                  </div>
-                  <p
-                    className={`mt-1 text-sm ${
-                      inputUsernameValid === false
-                        ? "text-red-600"
-                        : inputUsernameValid
-                        ? "text-green-600"
-                        : "text-gray-900"
-                    } 
+                          ? "text-red-600"
+                          : inputUsernameValid
+                          ? "text-green-600"
+                          : "text-gray-900"
+                      } 
                     `}
-                  >
-                    {inputUsernameValid === false
-                      ? usernameInUse
-                        ? `The username is already taken!`
-                        : "Not a valid username!"
-                      : inputUsernameValid
-                      ? "Lovely to meet you!"
-                      : "Username must consist of 4 to 15 letters or numbers."}
-                  </p>
-                </div>
+                    >
+                      {inputUsernameValid === false
+                        ? usernameInUse
+                          ? `The username is already taken!`
+                          : "Not a valid username!"
+                        : inputUsernameValid
+                        ? "Lovely to meet you!"
+                        : "Username must consist of 4 to 15 letters or numbers."}
+                    </p>
+                  </div>
 
-                <div className="basis-1">
-                  <label
-                    htmlFor="password"
-                    className="block text-md font-medium leading-6 text-gray-900"
-                  >
-                    Password
-                  </label>
-                  <div className="relative mt-2">
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      autoComplete="current-password"
-                      required
-                      value={inputPassword}
-                      onChange={(e) => setInputPassword(e.target.value)}
-                      className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6 ${
+                  <div className="basis-1">
+                    <label
+                      htmlFor="password"
+                      className="block text-md font-medium leading-6 text-gray-900"
+                    >
+                      Password
+                    </label>
+                    <div className="relative mt-2">
+                      <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                        required
+                        value={inputPassword}
+                        onChange={(e) => setInputPassword(e.target.value)}
+                        className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6 ${
+                          inputPasswordValid === false
+                            ? "ring-red-500"
+                            : inputPasswordValid === true
+                            ? "ring-green-400"
+                            : ""
+                        }`}
+                      />
+                      <div
+                        className={`pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 ${
+                          inputPasswordValid === false ? "" : "invisible"
+                        }`}
+                      >
+                        <ExclamationCircleIcon
+                          className="h-5 w-5 text-red-500"
+                          aria-hidden="true"
+                        />
+                      </div>
+                    </div>
+                    <p
+                      className={`mt-2 text-sm ${
                         inputPasswordValid === false
-                          ? "ring-red-500"
-                          : inputPasswordValid === true
-                          ? "ring-green-400"
-                          : ""
-                      }`}
-                    />
-                    <div
-                      className={`pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 ${
-                        inputPasswordValid === false ? "" : "invisible"
+                          ? "text-red-600"
+                          : inputPasswordValid
+                          ? "text-green-600"
+                          : "text-gray-900"
                       }`}
                     >
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-500"
-                        aria-hidden="true"
-                      />
-                    </div>
-                  </div>
-                  <p
-                    className={`mt-2 text-sm ${
-                      inputPasswordValid === false
-                        ? "text-red-600"
-                        : inputPasswordValid
-                        ? "text-green-600"
-                        : "text-gray-900"
-                    }`}
-                  >
-                    {inputPasswordValid
-                      ? `Good Job! Your password looks nice!`
-                      : `Passwords must be between 8 and 20 characters long and
+                      {inputPasswordValid
+                        ? `Good Job! Your password looks nice!`
+                        : `Passwords must be between 8 and 20 characters long and
                     include at least 1 uppercase letter, 1 lowercase letter, and
                     1 number.`}
-                  </p>
-                </div>
+                    </p>
+                  </div>
 
-                {/* <div className="flex items-center justify-between">
+                  {/* <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <input
                     id="remember-me"
@@ -387,31 +380,31 @@ const Signup = () => {
                   </div>
                 </div> */}
 
-                <div>
-                  <button
-                    disabled={!formValid}
-                    type="submit"
-                    className={`flex w-full justify-center rounded-md px-3 py-1.5 text-md font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 ${
-                      formValid
-                        ? "bg-orange-600 hover:bg-orange-500"
-                        : "bg-orange-300"
-                    }`}
-                  >
-                    {IsLoading ? (
-                      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-neutral-100 motion-reduce:animate-[spin_1.5s_linear_infinite]">
-                        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                          Loading...
-                        </span>
-                      </div>
-                    ) : (
-                      `Create account`
-                    )}
-                  </button>
-                </div>
-              </form>
-            </div>
+                  <div>
+                    <button
+                      disabled={!formValid}
+                      type="submit"
+                      className={`flex w-full justify-center rounded-md px-3 py-1.5 text-md font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 ${
+                        formValid
+                          ? "bg-orange-600 hover:bg-orange-500"
+                          : "bg-orange-300"
+                      }`}
+                    >
+                      {IsLoading ? (
+                        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-neutral-100 motion-reduce:animate-[spin_1.5s_linear_infinite]">
+                          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                            Loading...
+                          </span>
+                        </div>
+                      ) : (
+                        `Create account`
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
 
-            {/* <div className="mt-10">
+              {/* <div className="mt-10">
             <div className="relative">
               <div
                 className="absolute inset-0 flex items-center"
@@ -466,17 +459,18 @@ const Signup = () => {
               </a>
             </div>
           </div> */}
+            </div>
           </div>
         </div>
+        <div className="relative hidden w-0 flex-1 lg:block">
+          <img
+            className="absolute inset-0 h-full w-full object-cover"
+            src="/signup-page.png"
+            alt="A dish photo"
+          />
+        </div>
       </div>
-      <div className="relative hidden w-0 flex-1 lg:block">
-        <img
-          className="absolute inset-0 h-full w-full object-cover"
-          src="/signup-page.png"
-          alt="A dish photo"
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

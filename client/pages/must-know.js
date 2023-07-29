@@ -3,15 +3,19 @@ import PageHeader from "@/components/Page-Header";
 import Cookies from "cookies";
 import axios from "axios";
 import RecipeList from "@/components/RecipeList";
+import Head from "next/head";
 
 const MustKnow = ({ currentUser, recipes }) => {
-  // const { recipes } = props;
-  // console.log(recipes);
-
-  console.log(recipes);
-
   return (
     <>
+      <Head>
+        <title>Recipes you must know</title>
+        <meta
+          name="description"
+          content="
+          When it comes to Northeastern cuisine, these dishes are always mentioned. They are a must-try when it comes to Northeastern cuisine as they represent the soul of the region."
+        ></meta>
+      </Head>
       <NavBar currentUser={currentUser} />
       <PageHeader
         heading="The recipes you must know"
@@ -32,7 +36,7 @@ export async function getServerSideProps(context) {
     "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/recipes/must-know",
     {
       headers: {
-        Host: "authenticdongbei.com",
+        Host: "recipe-ne.com",
       },
     }
   );
@@ -41,12 +45,11 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const cookies = new Cookies(req, res);
   try {
-    // console.log("headerCookie", req.headers.cookie);
     const response = await axios.get(
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
       {
         headers: {
-          Host: "authenticdongbei.com",
+          Host: "recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -66,7 +69,7 @@ export async function getServerSideProps(context) {
           {},
           {
             headers: {
-              Host: "authenticdongbei.com",
+              Host: "recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

@@ -11,6 +11,8 @@ import {
 import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { User } from "../model/user";
+import { UserUpdatedPublisher } from "../events/user-updated-publisher";
+import { natsWrapper } from "../service/nats-wrapper";
 
 const router = express.Router();
 const { doubleCsrfProtection } = doubleCsrfUtilities;
@@ -60,6 +62,10 @@ router.patch(
       if (!updateUser) {
         throw new ResourceNotFoundError();
       }
+      await new UserUpdatedPublisher(natsWrapper.client).publish({
+        id: req.currentUser.id,
+        newUsername,
+      });
 
       res.status(200).send({
         user: updateUser,

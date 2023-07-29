@@ -2,9 +2,18 @@ import Image from "next/image";
 import NavBar from "@/components/Navbar";
 import Cookies from "cookies";
 import axios from "axios";
+import Head from "next/head";
 const NorthEasternPage = ({ currentUser }) => {
   return (
     <>
+      <Head>
+        <title>About Northeastern</title>
+        <meta
+          name="description"
+          content="
+          An Introduction to Northeast China, allowing you to have a better understanding of this beautiful region."
+        ></meta>
+      </Head>
       <NavBar currentUser={currentUser} />
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -159,12 +168,11 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const cookies = new Cookies(req, res);
   try {
-    // console.log("headerCookie", req.headers.cookie);
     const response = await axios.get(
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
       {
         headers: {
-          Host: "authenticdongbei.com",
+          Host: "recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -184,7 +192,7 @@ export async function getServerSideProps(context) {
           {},
           {
             headers: {
-              Host: "authenticdongbei.com",
+              Host: "recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

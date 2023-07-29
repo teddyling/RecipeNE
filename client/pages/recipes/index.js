@@ -4,6 +4,7 @@ import Cookies from "cookies";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import { Fragment, useState, useRef, useEffect } from "react";
 import {
@@ -64,9 +65,7 @@ const RecipePage = ({
   totalResult,
 }) => {
   const router = useRouter();
-  console.log(router.query);
-  console.log(totalResult);
-  console.log();
+
   const [open, setOpen] = useState(false);
 
   const [sortOrder, setSortOrder] = useState(null);
@@ -143,6 +142,14 @@ const RecipePage = ({
 
   return (
     <>
+      <Head>
+        <title>All Recipes</title>
+        <meta
+          name="description"
+          content="
+          These are the carefully selected recipes for you."
+        ></meta>
+      </Head>
       <NavBar currentUser={currentUser} />
       <PageHeader
         heading="Northeastern Chinese Recipes"
@@ -549,7 +556,7 @@ export async function getServerSideProps(context) {
 
   const recipeResponse = await axios.get(fullURL, {
     headers: {
-      Host: "authenticdongbei.com",
+      Host: "recipe-ne.com",
     },
   });
 
@@ -570,7 +577,7 @@ export async function getServerSideProps(context) {
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
       {
         headers: {
-          Host: "authenticdongbei.com",
+          Host: "recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -596,7 +603,7 @@ export async function getServerSideProps(context) {
           {},
           {
             headers: {
-              Host: "authenticdongbei.com",
+              Host: "recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

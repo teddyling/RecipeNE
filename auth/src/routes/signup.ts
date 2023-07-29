@@ -74,7 +74,7 @@ router.post(
 
       await newUser.save();
 
-      const verifyURL = `${req.protocol}://authenticdongbei.com/api/v1/users/verifysignup/${verifyToken}`;
+      const verifyURL = `${req.protocol}://recipe-ne.com/api/v1/users/verifysignup/${verifyToken}`;
       const emailSubject = `Please Verify Your Email Address for RecipeNE`;
       const content = ``;
 
@@ -183,7 +183,7 @@ router.post(
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                   <td align="center" valign="top" style="padding: 36px 24px;">
-                    <a href="http://authenticdongbei.com" target="_blank" style="display: inline-block;">
+                    <a href="http://recipe-ne.com" target="_blank" style="display: inline-block;">
                       <img src="logo-img" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
                     </a>
                   </td>
@@ -274,6 +274,7 @@ router.post(
       try {
         await sendEmail(newUser.email, emailSubject, content, html);
       } catch (error) {
+        console.log(error);
         newUser.emailVerifyToken = undefined;
         newUser.emailVerifyTokenExpires = undefined;
         await newUser.save();

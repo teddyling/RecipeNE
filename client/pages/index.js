@@ -6,12 +6,18 @@ import Footer from "@/components/Footer";
 import NavBar from "@/components/Navbar";
 import axios from "axios";
 import CommentPanel from "@/components/CommentPanel";
+import Head from "next/head";
 
 export default function HomePage({ currentUser }) {
-  console.log(currentUser);
-  // console.log(currentUser);
   return (
     <>
+      <Head>
+        <title>RecipeNE</title>
+        <meta
+          name="description"
+          content="Enjoy the most authentic Northeastern Chinese cuisine without stepping out of your home."
+        ></meta>
+      </Head>
       <NavBar currentUser={currentUser} />
       <HeroSection />
       <FeatureSection />
@@ -24,12 +30,11 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const cookies = new Cookies(req, res);
   try {
-    // console.log("headerCookie", req.headers.cookie);
     const response = await axios.get(
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
       {
         headers: {
-          Host: "authenticdongbei.com",
+          Host: "recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -49,7 +54,7 @@ export async function getServerSideProps(context) {
           {},
           {
             headers: {
-              Host: "authenticdongbei.com",
+              Host: "recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

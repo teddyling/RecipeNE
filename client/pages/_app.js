@@ -1,14 +1,19 @@
 import "@/styles/globals.css";
-import NavBar from "@/components/Navbar";
+
 import Footer from "@/components/Footer";
-import CurrentUserContext from "@/components/CurrentUserContext";
+
+import GlobalErrorContext from "@/components/GlobalError";
+import GlobalErrorPopUp from "@/components/GlobalErrorPopUp";
 export default function App({ Component, pageProps }) {
   return (
     <div>
-      <CurrentUserContext>
-        <Component {...pageProps} />
-        <Footer />
-      </CurrentUserContext>
+      <>
+        <GlobalErrorContext>
+          <GlobalErrorPopUp />
+          <Component {...pageProps} />
+          <Footer />
+        </GlobalErrorContext>
+      </>
     </div>
   );
 }

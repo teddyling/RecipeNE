@@ -39,7 +39,7 @@ router.post(
 
       await user.save();
 
-      const resetURL = `${req.protocol}://authenticdongbei.com/api/v1/users/resetpassword/${resetToken}`;
+      const resetURL = `${req.protocol}://recipe-ne/api/v1/users/resetpassword/${resetToken}`;
       const emailSubject = `Password Reset Verification(valid for 10 min)`;
       const content = ``;
       const html = `<!DOCTYPE html>
@@ -147,7 +147,7 @@ router.post(
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                   <td align="center" valign="top" style="padding: 36px 24px;">
-                    <a href="http://authenticdongbei.com" target="_blank" style="display: inline-block;">
+                    <a href="http://recipe-ne.com" target="_blank" style="display: inline-block;">
                       <img src="logo-img" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
                     </a>
                   </td>
@@ -182,7 +182,7 @@ router.post(
                           <table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                                <a href="http://authenticdongbei.com/reset-password?token=${resetToken}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px; background-color: #fb923c">Verify your Email</a>
+                                <a href="http://recipe-ne.com/reset-password?token=${resetToken}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px; background-color: #fb923c">Verify your Email</a>
                               </td>
                             </tr>
                           </table>
@@ -193,7 +193,7 @@ router.post(
                 </tr>
                 <tr>
                   <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                    <p style="margin: 0;">If that doesn't work, click this <a href="http://authenticdongbei.com/reset-password?token=${resetToken}">Link</a> to verify your email</p>
+                    <p style="margin: 0;">If that doesn't work, click this <a href="http://recipe-ne.com/reset-password?token=${resetToken}">Link</a> to verify your email</p>
                     <p>If you did not initiate this request or believe it was made in error, please ignore this email. Your account will remain secure, and no changes will be made.</p>
               
                   </td>

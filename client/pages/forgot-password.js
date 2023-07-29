@@ -42,17 +42,13 @@ const ForgotPasswordPage = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://authenticdongbei.com/api/v1/users/forgetpassword", {
+      .post("http://recipe-ne.com/api/v1/users/forgetpassword", {
         email: inputEmail,
       })
       .then(() => {
         router.push(`/verify-email/${inputEmail}?type=forgot-password`);
       })
       .catch((err) => {
-        console.log(
-          err.response.data.errors[0].message ===
-            "The resource you are trying to access could not be found!"
-        );
         if (
           err.response.data.errors[0].message ===
           "The resource you are trying to access could not be found!"
@@ -61,6 +57,8 @@ const ForgotPasswordPage = () => {
           setInputEmailErrorMessage(
             "This email is not associated with any account."
           );
+        } else {
+          showError();
         }
       });
   };

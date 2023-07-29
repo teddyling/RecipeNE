@@ -31,7 +31,7 @@ const VerifyEmailPage = () => {
     setResendButtonAble(false);
     if (router.query.type === "verify-signup") {
       axios
-        .post("http://authenticdongbei.com/api/v1/users/resend-email", {
+        .post("http://recipe-ne.com/api/v1/users/resend-email", {
           email,
           type,
         })
@@ -50,7 +50,7 @@ const VerifyEmailPage = () => {
       console.log(email, type);
       const newEmail = router.query.newemail;
       axios
-        .post("http://authenticdongbei.com/api/v1/users/resend-email", {
+        .post("http://recipe-ne.com/api/v1/users/resend-email", {
           email,
           type,
           newEmail,
@@ -67,7 +67,7 @@ const VerifyEmailPage = () => {
         });
     } else if (router.query.type === "forgot-password") {
       axios
-        .post("http://authenticdongbei.com/api/v1/users/resend-email", {
+        .post("http://recipe-ne.com/api/v1/users/resend-email", {
           email,
           type,
         })
@@ -96,6 +96,9 @@ const VerifyEmailPage = () => {
         <p className="mt-6 text-base leading-7 text-gray-800">
           Check <span className="font-extrabold">{email}</span> to verify your
           email address
+        </p>
+        <p className="mt-6 text-base leading-7 text-gray-800">
+          If you haven't received the email, please check the junk/spam folder.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link

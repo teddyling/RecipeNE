@@ -1,12 +1,14 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Cookies from "cookies";
 import axios from "axios";
 import Image from "next/image";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 import NavBar from "@/components/Navbar";
+import { globalErrorContext } from "@/components/GlobalError";
 import CommentPanel from "@/components/CommentPanel";
 import RecipeList from "@/components/RecipeList";
+import Head from "next/head";
 
 const recipeShowPage = ({
   currentUser,
@@ -19,11 +21,12 @@ const recipeShowPage = ({
   const [commentPanelOpen, setCommentPanelOpen] = useState(false);
   const [testcomments, setTestComments] = useState([]);
   const [commentIsLoading, setCommentIsLoading] = useState(false);
+  const { showError } = useContext(globalErrorContext);
 
   useEffect(() => {
     setCommentIsLoading(true);
     axios
-      .get(`http://authenticdongbei.com/api/v1/comments/${recipe.id}`)
+      .get(`http://recipe-ne.com/api/v1/comments/${recipe.id}`)
       .then((data) => {
         setCommentIsLoading(false);
         setTestComments(
@@ -46,7 +49,7 @@ const recipeShowPage = ({
       })
       .catch((err) => {
         setCommentIsLoading(false);
-        console.error(err);
+        showError();
       });
   }, []);
 
@@ -64,11 +67,10 @@ const recipeShowPage = ({
     }
     setCommentPanelOpen(true);
   };
-  // console.log(recipe);
 
   const onCommentSubmit = (content) => {
     axios
-      .post("http://authenticdongbei.com/api/v1/comments", {
+      .post("http://recipe-ne.com/api/v1/comments", {
         recipeId: recipe.id,
         comment: content,
       })
@@ -92,7 +94,7 @@ const recipeShowPage = ({
         //setCommentPanelOpen(false);
       })
       .catch(() => {
-        console.error("Error!");
+        showError();
       });
   };
   const onCommentCancel = () => {
@@ -101,6 +103,10 @@ const recipeShowPage = ({
 
   return (
     <>
+      <Head>
+        <title>{recipe.title}</title>
+        <meta name="description" content={recipe.description}></meta>
+      </Head>
       <NavBar currentUser={currentUser} />
 
       <main className="pt-10 sm:pt-16">
@@ -334,7 +340,7 @@ export async function getServerSideProps(context) {
     `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/recipes/s/${slug}`,
     {
       headers: {
-        Host: "authenticdongbei.com",
+        Host: "recipe-ne.com",
       },
     }
   );
@@ -345,7 +351,7 @@ export async function getServerSideProps(context) {
     `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/comments/${recipeId}`,
     {
       headers: {
-        Host: "authenticdongbei.com",
+        Host: "recipe-ne.com",
       },
     }
   );
@@ -354,25 +360,22 @@ export async function getServerSideProps(context) {
     "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/recipes/may-also-like",
     {
       headers: {
-        Host: "authenticdongbei.com",
+        Host: "recipe-ne.com",
       },
     }
   );
   const mayAlsoLikeRecipe = mayAlsoLikeResponse.data.recipes;
-  console.log(mayAlsoLikeRecipe);
 
   let comments = commentResponse.data.comments;
-  console.log(commentResponse.data);
 
   const { req, res } = context;
   const cookies = new Cookies(req, res);
   try {
-    // console.log("headerCookie", req.headers.cookie);
     const response = await axios.get(
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
       {
         headers: {
-          Host: "authenticdongbei.com",
+          Host: "recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -392,7 +395,7 @@ export async function getServerSideProps(context) {
           {},
           {
             headers: {
-              Host: "authenticdongbei.com",
+              Host: "recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

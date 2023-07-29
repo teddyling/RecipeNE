@@ -2,6 +2,7 @@ import Image from "next/image";
 import NavBar from "@/components/Navbar";
 import Cookies from "cookies";
 import axios from "axios";
+import Head from "next/head";
 const AboutUs = ({ currentUser }) => {
   const people = [
     {
@@ -23,6 +24,14 @@ const AboutUs = ({ currentUser }) => {
 
   return (
     <>
+      <Head>
+        <title>About Us</title>
+        <meta
+          name="description"
+          content="
+          A brief introduction to the developer team of this project. "
+        ></meta>
+      </Head>
       <NavBar currentUser={currentUser} />
       <div className="bg-white py-24 md:py-32">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-5">
@@ -117,12 +126,11 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const cookies = new Cookies(req, res);
   try {
-    // console.log("headerCookie", req.headers.cookie);
     const response = await axios.get(
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
       {
         headers: {
-          Host: "authenticdongbei.com",
+          Host: "recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -142,7 +150,7 @@ export async function getServerSideProps(context) {
           {},
           {
             headers: {
-              Host: "authenticdongbei.com",
+              Host: "recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

@@ -30,7 +30,7 @@ const NavBar = ({ currentUser }) => {
   const onSignout = async (e) => {
     try {
       e.stopPropagation();
-      await axios.post(`http://authenticdongbei.com/api/v1/users/signout`, {});
+      await axios.post(`http://recipe-ne.com/api/v1/users/signout`, {});
       window.location.href = "/";
     } catch (err) {
       console.error(err);

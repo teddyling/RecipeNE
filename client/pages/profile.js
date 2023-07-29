@@ -1,9 +1,10 @@
 import Cookies from "cookies";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Dialog, Switch } from "@headlessui/react";
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import { StarIcon } from "@heroicons/react/20/solid";
+import { globalErrorContext } from "@/components/GlobalError";
 
 import NavBar from "@/components/Navbar";
 import axios from "axios";
@@ -48,12 +49,12 @@ export default function Example({ currentUser }) {
   const [newEmailAddressValid, setNewEmailAddressValid] = useState(true);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [emailChanged, setEmailChanged] = useState(false);
+  const { showError } = useContext(globalErrorContext);
 
   useEffect(() => {
     axios
-      .get("http://authenticdongbei.com/api/v1/comments/mycomments")
+      .get("http://recipe-ne.com/api/v1/comments/mycomments")
       .then((res) => {
-        console.log(res.data.comments);
         setComments(res.data.comments);
       })
       .catch((err) => {});
@@ -71,11 +72,9 @@ export default function Example({ currentUser }) {
       ) {
         setNewUserNameValid(true);
         setUsernameErrorMessage("");
-        console.log("valid Username");
       } else if (newUsername.length === 0) {
         setNewUserNameValid(null);
       } else {
-        console.log("Invalid username");
         setNewUserNameValid(false);
         setUsernameErrorMessage("Invalid username");
       }
@@ -89,13 +88,11 @@ export default function Example({ currentUser }) {
       let re =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (re.test(newEmailAddress)) {
-        console.log("valid Email");
         setNewEmailAddressValid(true);
         setEmailErrorMessage("");
       } else if (newEmailAddress.length === 0) {
         setNewEmailAddressValid(null);
       } else {
-        console.log("Invalid Email");
         setNewEmailAddressValid(false);
         setEmailErrorMessage("Invalid Email");
       }
@@ -120,31 +117,29 @@ export default function Example({ currentUser }) {
   const handleNewUsernameSave = async (e) => {
     e.preventDefault();
     await axios
-      .patch("http://authenticdongbei.com/api/v1/users/updateme", {
+      .patch("http://recipe-ne.com/api/v1/users/updateme", {
         username: newUsername,
       })
       .then((data) => {
-        axios
-          .post(`http://authenticdongbei.com/api/v1/users/signout`, {})
-          .then(() => {
-            setUsernameErrorMessage("");
-            setUsernameChanged(true);
-            setTimeout(() => {
-              window.location.href = "/";
-            }, 3000);
-          });
+        axios.post(`http://recipe-ne.com/api/v1/users/signout`, {}).then(() => {
+          setUsernameErrorMessage("");
+          setUsernameChanged(true);
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 3000);
+        });
       })
       .catch((error) => {
-        console.error(error);
         if (
           error.response.data.errors[0].message ===
           "The username is already in use!"
         ) {
-          console.log("username in use");
           setNewUserNameValid(false);
           setUsernameErrorMessage(
             "The username is already associated with an account"
           );
+        } else {
+          showError();
         }
       });
   };
@@ -152,37 +147,32 @@ export default function Example({ currentUser }) {
   const handleNewEmailSave = async (e) => {
     e.preventDefault();
     await axios
-      .patch("http://authenticdongbei.com/api/v1/users/updatemyemail", {
+      .patch("http://recipe-ne.com/api/v1/users/updatemyemail", {
         email: newEmailAddress,
       })
       .then(() => {
-        axios
-          .post(`http://authenticdongbei.com/api/v1/users/signout`, {})
-          .then(() => {
-            setEmailErrorMessage("");
-            setEmailChanged(true);
-            router.push(
-              `/verify-email/${currentUser.email}?type=change-email-address&newemail=${newEmailAddress}`
-            );
-          });
+        axios.post(`http://recipe-ne.com/api/v1/users/signout`, {}).then(() => {
+          setEmailErrorMessage("");
+          setEmailChanged(true);
+          router.push(
+            `/verify-email/${currentUser.email}?type=change-email-address&newemail=${newEmailAddress}`
+          );
+        });
       })
       .catch((error) => {
-        console.error(error);
         if (
           error.response.data.errors[0].message ===
           "The email is already in use!"
         ) {
-          console.log("Email in use");
           setNewEmailAddressValid(false);
           setEmailErrorMessage(
             "The email is already associated with an ccount"
           );
+        } else {
+          showError();
         }
       });
   };
-
-  console.log(currentUser);
-  console.log(newEmailAddress === currentUser.email || !newEmailAddressValid);
 
   return (
     <>
@@ -508,12 +498,11 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const cookies = new Cookies(req, res);
   try {
-    // console.log("headerCookie", req.headers.cookie);
     const response = await axios.get(
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
       {
         headers: {
-          Host: "authenticdongbei.com",
+          Host: "recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -533,7 +522,7 @@ export async function getServerSideProps(context) {
           {},
           {
             headers: {
-              Host: "authenticdongbei.com",
+              Host: "recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

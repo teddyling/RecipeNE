@@ -55,7 +55,7 @@ router.patch(
       const emailChangeToken = user.createChangeEmailToken();
       await user.save();
 
-      const resetURL = `${req.protocol}://authenticdongbei.com/api/v1/users/verifyemail/${emailChangeToken}`;
+      const resetURL = `${req.protocol}://recipe-ne.com/api/v1/users/verifyemail/${emailChangeToken}`;
       const emailSubject = `Verify Your Email Address Change(valid for 10 min)`;
       const content = ``;
       const html = `<!DOCTYPE html>
@@ -163,7 +163,7 @@ router.patch(
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                   <td align="center" valign="top" style="padding: 36px 24px;">
-                    <a href="http://authenticdongbei.com" target="_blank" style="display: inline-block;">
+                    <a href="http://recipe-ne.com" target="_blank" style="display: inline-block;">
                       <img src="logo-img" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
                     </a>
                   </td>
@@ -358,7 +358,7 @@ router.patch(
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                   <td align="center" valign="top" style="padding: 36px 24px;">
-                    <a href="http://authenticdongbei.com" target="_blank" style="display: inline-block;">
+                    <a href="http://recipe-ne.com" target="_blank" style="display: inline-block;">
                       <img src="logo-img" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
                     </a>
                   </td>

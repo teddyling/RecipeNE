@@ -7,9 +7,9 @@ import {
 const FeatureSection = () => {
   const features = [
     {
-      name: "100+ various recipes",
+      name: "50+ various recipes",
       description:
-        "Recipes are divided into 10+ categories. Experienced chef or beginner cook? Meat lover or veggie fan? You will find recipes that fit your needs for free!",
+        "Recipes are divided into many categories. Experienced chef or beginner cook? Meat lover or veggie fan? You will find recipes that fit your needs for free!",
       icon: ClipboardDocumentListIcon,
     },
     {

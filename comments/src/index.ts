@@ -5,6 +5,7 @@ import { app } from "./app";
 import { DatabaseConnectionError, client } from "@dongbei/utilities";
 import { UserCreatedListener } from "./events/user-created-listener";
 import { RecipeCreatedListener } from "./events/recipe-created-listener";
+import { UserUpdatedListener } from "./events/user-updated-listener";
 
 const start = async () => {
   process.on("uncaughtException", (err) => {
@@ -58,6 +59,7 @@ const start = async () => {
 
     new UserCreatedListener(natsWrapper.client).listen();
     new RecipeCreatedListener(natsWrapper.client).listen();
+    new UserUpdatedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URL);
     console.log("Connected to MongoDB successfully!");

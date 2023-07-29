@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
+import { globalErrorContext } from "@/components/GlobalError";
 
 const ResetPasswordPage = () => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const ResetPasswordPage = () => {
     useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const { showError } = useContext(globalErrorContext);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,7 +33,6 @@ const ResetPasswordPage = () => {
         number
       ) {
         setInputPasswordValid(true);
-        console.log("valid Password");
       } else if (inputPassword.length === 0) {
         setInputPasswordValid(null);
       } else {
@@ -48,7 +49,7 @@ const ResetPasswordPage = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://authenticdongbei.com/api/v1/users/resetpassword/${token}`, {
+      .post(`http://recipe-ne.com/api/v1/users/resetpassword/${token}`, {
         password: inputPassword,
       })
       .then(() => {
@@ -58,7 +59,7 @@ const ResetPasswordPage = () => {
         }, 5000);
       })
       .catch((err) => {
-        console.error(err);
+        showError();
       });
   };
 

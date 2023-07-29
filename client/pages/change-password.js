@@ -1,8 +1,9 @@
 import Cookies from "cookies";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { globalErrorContext } from "@/components/GlobalError";
 
 const ChangePasswordPage = () => {
   const [buttonValid, setButtonValid] = useState(false);
@@ -19,6 +20,8 @@ const ChangePasswordPage = () => {
 
   const [passwordUpdatedSuccessfully, setPasswordUpdatedSuccessfully] =
     useState(false);
+
+  const { error, showError } = useContext(globalErrorContext);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,7 +54,6 @@ const ChangePasswordPage = () => {
         number
       ) {
         setNewPasswordValid(true);
-        console.log("valid Password");
       } else {
         setNewPasswordValid(false);
         setNewPasswordErrorMessage(`Passwords must be between 8 and 20 characters long and include
@@ -72,20 +74,18 @@ const ChangePasswordPage = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     axios
-      .patch("http://authenticdongbei.com/api/v1/users/updatepassword", {
+      .patch("http://recipe-ne.com/api/v1/users/updatepassword", {
         oldPassword: currentPassword,
         newPassword,
       })
       .then(() => {
         setButtonValid(false);
         setPasswordUpdatedSuccessfully(true);
-        axios
-          .post(`http://authenticdongbei.com/api/v1/users/signout`, {})
-          .then(() => {
-            setTimeout(() => {
-              window.location.href = "/";
-            }, 5000);
-          });
+        axios.post(`http://recipe-ne.com/api/v1/users/signout`, {}).then(() => {
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 5000);
+        });
       })
       .catch((error) => {
         setButtonValid(true);
@@ -98,6 +98,8 @@ const ChangePasswordPage = () => {
           setNewPassword("");
           setCurrentPasswordValid(false);
           setCurrentPasswordErrorMessage("The current password is incorrect.");
+        } else {
+          showError();
         }
       });
   };
