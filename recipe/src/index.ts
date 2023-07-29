@@ -57,9 +57,7 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
     await mongoose.connect(process.env.MONGO_URL);
     console.log("Connected to MongoDB successfully!");
-    if (
-      (await mongoose.connection.db.collection("recipe").countDocuments()) === 0
-    ) {
+    if ((await Recipe.countDocuments()) === 0) {
       for (let seed of seeds) {
         const recipe = Recipe.build(seed);
         const savedRecipe = await recipe.save();

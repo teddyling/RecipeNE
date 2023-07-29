@@ -2,10 +2,34 @@ import express, { NextFunction, Request, Response } from "express";
 import { Recipe } from "../models/recipe";
 // import { BadRequestError } from "../../utilities/errors/bad-request-error";
 // import { NotFoundError } from "../../utilities/errors/not-found-error";
-import { applyAPIFeature } from "../utilities/functions/apply-api-features";
 import { rateLimitMiddleware } from "@dongbei/utilities";
 
 const router = express.Router();
+
+const applyAPIFeature = (req: Request) => {
+  const queryObj = { ...req.query };
+  // Regular filter
+  const excludedFields = ["page", "sort", "limit", "fields"];
+  excludedFields.forEach((ele) => delete queryObj[ele]);
+
+  // Advance filter, add greater than (equal) and less than (equal)
+  let queryStr = JSON.stringify(queryObj);
+  queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+
+  let query = Recipe.find(JSON.parse(queryStr));
+
+  // Sorting
+  if (req.query.sort) {
+    query = query.sort(req.query.sort as string);
+  }
+
+  // Field Limiting
+  if (req.query.fields) {
+    const fields = (req.query.fields as string).split(",").join(" ");
+    query = query.select(fields);
+  }
+  return query;
+};
 
 router.get(
   "/api/v1/recipes",
