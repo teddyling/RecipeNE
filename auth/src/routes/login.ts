@@ -14,11 +14,6 @@ import {
 import { User } from "../model/user";
 import { Password } from "../service/Password";
 
-// const protectLoginRedisClient = createClient({
-//   legacyMode: true,
-//   disableOfflineQueue: true,
-// });
-
 const maxWrongAttemptsByIPperDay = 50;
 const maxConsecutiveFailsByUsernameAndIP = 6;
 
@@ -148,11 +143,8 @@ router.post(
         }
       );
 
-      //console.log(req.session?.jwt);
-
       req.session = {
         jwt: token,
-        // refreshToken,
       };
 
       res.cookie("resetToken", refreshToken, {

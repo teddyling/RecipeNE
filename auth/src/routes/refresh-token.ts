@@ -9,33 +9,9 @@ import { RefreshToken } from "../service/RefreshToken";
 
 const router = express.Router();
 
-// const ensureJWTAndRefreshToken = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     if (!req.session || !req.session.jwt) {
-//       return next(new NotAuthorizedError("No or Invalid token"));
-//     }
-//     const { token } = req.session.jwt;
-//     const result = await verifyJWT(token, process.env.JWT_SECRET!);
-//     return next();
-//   } catch (err) {
-//     if (err instanceof TokenExpiredError) {
-//       return next();
-//     } else {
-//       return next(new NotAuthorizedError("Invaid token"));
-//     }
-//   }
-// };
-
 router.post(
   "/api/v1/users/refresh-token",
   async (req: Request, res: Response, next: NextFunction) => {
-    // console.log(req.cookies);
-    // console.log(req.signedCookies);
-
     const refreshToken = req.signedCookies.resetToken;
 
     try {

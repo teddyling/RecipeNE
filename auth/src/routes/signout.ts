@@ -28,10 +28,6 @@ router.post(
       user.refreshToken = undefined;
       await user.save();
 
-      console.log(req.cookies);
-      console.log(req.signedCookies);
-      console.log(req.headers);
-
       const suspendedJwt = req.session!.jwt;
       const invalidMiliSecond = req.currentUser.exp! * 1000 - Date.now();
       await client.v4.set(suspendedJwt, 1, {

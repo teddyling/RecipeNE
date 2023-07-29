@@ -12,7 +12,6 @@ const router = express.Router();
 router.post(
   "/api/v1/users/resend-email",
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log("Get to this route!");
     try {
       if (!req.body || !req.body.email || !req.body.type) {
         throw new BadRequestError("Wrong resend email request format");
@@ -23,7 +22,6 @@ router.post(
       if (!user) {
         throw new ResourceNotFoundError();
       }
-      console.log("prepare to send email");
 
       if (type === "verify-signup") {
         const verifyToken = user.createEmailVerifyToken();
@@ -218,7 +216,6 @@ router.post(
         }
         res.status(204).send(null);
       } else if (type === "change-email-address") {
-        console.log("Server sends email!");
         const newEmail = req.body.newEmail;
         const emailChangeToken = user.createChangeEmailToken();
         await user.save();

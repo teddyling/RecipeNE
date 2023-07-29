@@ -7,7 +7,6 @@ router.get(
   "/api/v1/users/currentuser",
   ensureLogin,
   (req: Request, res: Response, next: NextFunction) => {
-    // console.log(req.session);
     res.send({ currentUser: req.currentUser || null });
   }
 );

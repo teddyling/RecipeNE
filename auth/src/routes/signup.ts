@@ -2,9 +2,6 @@ import jwt from "jsonwebtoken";
 import { body, validationResult } from "express-validator";
 import express, { Request, Response, NextFunction } from "express";
 import { User } from "../model/user";
-// import { BadRequestError } from "../../utilities/errors/bad-request-error";
-// import { RequestValidationError } from "../../utilities/errors/request-validation-error";
-// import { ensureLogin } from "../../utilities/middlewares/ensureLogin";
 
 import { BadRequestError } from "@dongbei/utilities";
 import {
