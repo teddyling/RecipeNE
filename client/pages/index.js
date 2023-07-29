@@ -5,7 +5,7 @@ import TestmonialSection from "@/components/Testmonial-section";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/Navbar";
 import axios from "axios";
-import CommentPanel from "@/components/CommentPanel";
+// import CommentPanel from "@/components/CommentPanel";
 import Head from "next/head";
 
 export default function HomePage({ currentUser }) {
