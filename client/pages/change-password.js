@@ -74,18 +74,20 @@ const ChangePasswordPage = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     axios
-      .patch("http://recipe-ne.com/api/v1/users/updatepassword", {
+      .patch("http://www.recipe-ne.com/api/v1/users/updatepassword", {
         oldPassword: currentPassword,
         newPassword,
       })
       .then(() => {
         setButtonValid(false);
         setPasswordUpdatedSuccessfully(true);
-        axios.post(`http://recipe-ne.com/api/v1/users/signout`, {}).then(() => {
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 5000);
-        });
+        axios
+          .post(`http://www.recipe-ne.com/api/v1/users/signout`, {})
+          .then(() => {
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 5000);
+          });
       })
       .catch((error) => {
         setButtonValid(true);

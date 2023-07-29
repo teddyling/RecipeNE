@@ -26,7 +26,7 @@ const recipeShowPage = ({
   useEffect(() => {
     setCommentIsLoading(true);
     axios
-      .get(`http://recipe-ne.com/api/v1/comments/${recipe.id}`)
+      .get(`http://www.recipe-ne.com/api/v1/comments/${recipe.id}`)
       .then((data) => {
         setCommentIsLoading(false);
         setTestComments(
@@ -70,7 +70,7 @@ const recipeShowPage = ({
 
   const onCommentSubmit = (content) => {
     axios
-      .post("http://recipe-ne.com/api/v1/comments", {
+      .post("http://www.recipe-ne.com/api/v1/comments", {
         recipeId: recipe.id,
         comment: content,
       })
@@ -337,10 +337,10 @@ const recipeShowPage = ({
 export async function getServerSideProps(context) {
   const slug = context.query.slug;
   const response = await axios.get(
-    `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/recipes/s/${slug}`,
+    `http://www.recipe-ne.com/api/v1/recipes/s/${slug}`,
     {
       headers: {
-        Host: "recipe-ne.com",
+        Host: "www.recipe-ne.com",
       },
     }
   );
@@ -348,19 +348,19 @@ export async function getServerSideProps(context) {
   const recipeId = recipe.id;
 
   const commentResponse = await axios.get(
-    `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/comments/${recipeId}`,
+    `http://www.recipe-ne.com/api/v1/comments/${recipeId}`,
     {
       headers: {
-        Host: "recipe-ne.com",
+        Host: "www.recipe-ne.com",
       },
     }
   );
 
   const mayAlsoLikeResponse = await axios.get(
-    "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/recipes/may-also-like",
+    "http://www.recipe-ne.com/api/v1/recipes/may-also-like",
     {
       headers: {
-        Host: "recipe-ne.com",
+        Host: "www.recipe-ne.com",
       },
     }
   );
@@ -372,10 +372,10 @@ export async function getServerSideProps(context) {
   const cookies = new Cookies(req, res);
   try {
     const response = await axios.get(
-      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
+      "http://www.recipe-ne.com/api/v1/users/currentuser",
       {
         headers: {
-          Host: "recipe-ne.com",
+          Host: "www.recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -391,11 +391,11 @@ export async function getServerSideProps(context) {
       console.log("Trying to refresh token");
       if (err.response.data.errors.message === `Token Expired`) {
         const refreshResponse = await axios.post(
-          `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/refresh-token`,
+          `http://www.recipe-ne.com/api/v1/users/refresh-token`,
           {},
           {
             headers: {
-              Host: "recipe-ne.com",
+              Host: "www.recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

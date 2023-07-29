@@ -169,10 +169,10 @@ export async function getServerSideProps(context) {
   const cookies = new Cookies(req, res);
   try {
     const response = await axios.get(
-      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
+      "http://www.recipe-ne.com/api/v1/users/currentuser",
       {
         headers: {
-          Host: "recipe-ne.com",
+          Host: "www.recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -188,11 +188,11 @@ export async function getServerSideProps(context) {
       console.log("Trying to refresh token");
       if ((err.response.data.errors.message = `Token Expired`)) {
         const refreshResponse = await axios.post(
-          `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/refresh-token`,
+          `http://www.recipe-ne.com/api/v1/users/refresh-token`,
           {},
           {
             headers: {
-              Host: "recipe-ne.com",
+              Host: "www.recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

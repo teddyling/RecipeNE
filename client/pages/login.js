@@ -58,7 +58,7 @@ const Login = () => {
     setFormValid(false);
     await axios
       .post(
-        "http://recipe-ne.com/api/v1/users/login",
+        "http://www.recipe-ne.com/api/v1/users/login",
         {
           email: inputEmail,
           password: inputPassword,

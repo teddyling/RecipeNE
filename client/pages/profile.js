@@ -53,7 +53,7 @@ export default function Example({ currentUser }) {
 
   useEffect(() => {
     axios
-      .get("http://recipe-ne.com/api/v1/comments/mycomments")
+      .get("http://www.recipe-ne.com/api/v1/comments/mycomments")
       .then((res) => {
         setComments(res.data.comments);
       })
@@ -117,17 +117,19 @@ export default function Example({ currentUser }) {
   const handleNewUsernameSave = async (e) => {
     e.preventDefault();
     await axios
-      .patch("http://recipe-ne.com/api/v1/users/updateme", {
+      .patch("http://www.recipe-ne.com/api/v1/users/updateme", {
         username: newUsername,
       })
       .then((data) => {
-        axios.post(`http://recipe-ne.com/api/v1/users/signout`, {}).then(() => {
-          setUsernameErrorMessage("");
-          setUsernameChanged(true);
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 3000);
-        });
+        axios
+          .post(`http://www.recipe-ne.com/api/v1/users/signout`, {})
+          .then(() => {
+            setUsernameErrorMessage("");
+            setUsernameChanged(true);
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 3000);
+          });
       })
       .catch((error) => {
         if (
@@ -147,17 +149,19 @@ export default function Example({ currentUser }) {
   const handleNewEmailSave = async (e) => {
     e.preventDefault();
     await axios
-      .patch("http://recipe-ne.com/api/v1/users/updatemyemail", {
+      .patch("http://www.recipe-ne.com/api/v1/users/updatemyemail", {
         email: newEmailAddress,
       })
       .then(() => {
-        axios.post(`http://recipe-ne.com/api/v1/users/signout`, {}).then(() => {
-          setEmailErrorMessage("");
-          setEmailChanged(true);
-          router.push(
-            `/verify-email/${currentUser.email}?type=change-email-address&newemail=${newEmailAddress}`
-          );
-        });
+        axios
+          .post(`http://www.recipe-ne.com/api/v1/users/signout`, {})
+          .then(() => {
+            setEmailErrorMessage("");
+            setEmailChanged(true);
+            router.push(
+              `/verify-email/${currentUser.email}?type=change-email-address&newemail=${newEmailAddress}`
+            );
+          });
       })
       .catch((error) => {
         if (
@@ -499,10 +503,10 @@ export async function getServerSideProps(context) {
   const cookies = new Cookies(req, res);
   try {
     const response = await axios.get(
-      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/currentuser",
+      "http://www.recipe-ne.com/api/v1/users/currentuser",
       {
         headers: {
-          Host: "recipe-ne.com",
+          Host: "www.recipe-ne.com",
           Cookie: req.headers.cookie,
         },
       }
@@ -518,11 +522,11 @@ export async function getServerSideProps(context) {
       console.log("Trying to refresh token");
       if (err.response.data.errors.message === `Token Expired`) {
         const refreshResponse = await axios.post(
-          `http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/users/refresh-token`,
+          `http://www.recipe-ne.com/api/v1/users/refresh-token`,
           {},
           {
             headers: {
-              Host: "recipe-ne.com",
+              Host: "www.recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }

@@ -42,7 +42,7 @@ const ForgotPasswordPage = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://recipe-ne.com/api/v1/users/forgetpassword", {
+      .post("http://www.recipe-ne.com/api/v1/users/forgetpassword", {
         email: inputEmail,
       })
       .then(() => {

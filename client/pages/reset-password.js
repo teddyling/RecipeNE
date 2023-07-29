@@ -49,7 +49,7 @@ const ResetPasswordPage = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://recipe-ne.com/api/v1/users/resetpassword/${token}`, {
+      .post(`http://www.recipe-ne.com/api/v1/users/resetpassword/${token}`, {
         password: inputPassword,
       })
       .then(() => {
