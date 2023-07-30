@@ -150,7 +150,7 @@ export async function getServerSideProps(context) {
           {},
           {
             headers: {
-              Host: "recipe-ne.com",
+              Host: "www.recipe-ne.com",
               Cookie: req.headers.cookie,
             },
           }
