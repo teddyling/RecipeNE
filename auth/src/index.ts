@@ -7,7 +7,7 @@ import { DatabaseConnectionError, client } from "@dongbei/utilities";
 
 const start = async () => {
   process.on("uncaughtException", (err) => {
-    console.error("Uncaught Exeception, shuting down...", err);
+    console.error("Uncaught Exeception, shuting down....", err);
     process.exit(1);
   });
   console.log("starting.....");
