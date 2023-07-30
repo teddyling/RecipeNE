@@ -71,7 +71,7 @@ router.post(
 
       await newUser.save();
 
-      const verifyURL = `${req.protocol}://www.www.recipe-ne.com/api/v1/users/verifysignup/${verifyToken}`;
+      const verifyURL = `${req.protocol}://www.recipe-ne.com/api/v1/users/verifysignup/${verifyToken}`;
       const emailSubject = `Please Verify Your Email Address for RecipeNE`;
       const content = ``;
 
