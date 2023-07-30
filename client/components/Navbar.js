@@ -19,7 +19,7 @@ function classNames(...classes) {
 
 const NavBar = ({ currentUser }) => {
   const router = useRouter();
-  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const options = [
     { name: "About Northeastern", href: "/about-northeastern" },
     { name: "Recipes", href: "/recipes" },
@@ -234,7 +234,7 @@ const NavBar = ({ currentUser }) => {
           </button>
         </div>
       </nav>
-      {/* <Dialog
+      <Dialog
         as="div"
         className="lg:hidden"
         open={mobileMenuOpen}
@@ -244,19 +244,14 @@ const NavBar = ({ currentUser }) => {
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center gap-x-6">
             <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
+              <img className="h-8 w-auto" src="/logo.png" alt="logo" />
             </a>
-            <a
-              href="#"
-              className="ml-auto rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            <Link
+              href="/signup"
+              className="ml-auto rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
             >
               Sign up
-            </a>
+            </Link>
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -269,28 +264,28 @@ const NavBar = ({ currentUser }) => {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
+                {options.map((option) => (
+                  <Link
+                    key={option.name}
+                    href={option.href}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    {item.name}
-                  </a>
+                    {option.name}
+                  </Link>
                 ))}
               </div>
               <div className="py-6">
-                <a
-                  href="#"
+                <Link
+                  href="/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Log in
-                </a>
+                </Link>
               </div>
             </div>
           </div>
         </Dialog.Panel>
-      </Dialog> */}
+      </Dialog>
     </header>
   );
 };

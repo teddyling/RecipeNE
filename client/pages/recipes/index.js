@@ -282,7 +282,6 @@ const RecipePage = ({
                         <Menu.Item key={option.name}>
                           {({ active }) => (
                             <Link
-                              // onClick={(e) => handleSortClick(e, optionIdx)}
                               href={{
                                 pathname: router.pathname,
                                 query: { ...query, order: option.queryName },
@@ -513,7 +512,6 @@ const RecipePage = ({
 };
 
 export async function getServerSideProps(context) {
-  console.log(context.query);
   const sortOrder = context.query.order;
   const mainIngredient = context.query["main-ingredient"];
   const dishType = context.query["dish-type"];
@@ -553,7 +551,7 @@ export async function getServerSideProps(context) {
   let currentPage = recipeResponse.data.page;
   const totalResult = recipeResponse.data.length;
   const pageNumberFromServer = Math.floor(recipeResponse.data.length / 12) + 1;
-  console.log(recipeResponse.data.length);
+
   if (currentPage > pageNumberFromServer) {
     currentPage = 1;
   }
@@ -561,7 +559,6 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const cookies = new Cookies(req, res);
   try {
-    // console.log("headerCookie", req.headers.cookie);
     const response = await axios.get(
       "http://www.recipe-ne.com/api/v1/users/currentuser",
       {
