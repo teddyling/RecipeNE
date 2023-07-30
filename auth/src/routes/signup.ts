@@ -172,7 +172,7 @@ router.post(
       <body style="background-color: #fff1dd;">
       
         <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
-          A preheader is the short summary text that follows the subject line when an email is viewed in the inbox.
+        Verify your signup email
         </div>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
