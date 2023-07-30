@@ -246,13 +246,15 @@ const NavBar = ({ currentUser }) => {
             <Link href="/" className="-m-1.5 p-1.5">
               <img className="h-8 w-auto" src="/logo.png" alt="logo" />
             </Link>
-            {!currentUser && (
+            {!currentUser ? (
               <Link
                 href="/signup"
                 className="ml-auto rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
               >
                 Sign up
               </Link>
+            ) : (
+              <div />
             )}
             <button
               type="button"
@@ -277,12 +279,14 @@ const NavBar = ({ currentUser }) => {
                 ))}
               </div>
               <div className="py-6">
-                <Link
-                  href="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </Link>
+                {!currentUser && (
+                  <Link
+                    href="/login"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Log in
+                  </Link>
+                )}
               </div>
             </div>
           </div>
