@@ -1,14 +1,6 @@
 const NotFoundPage = () => {
   return (
     <>
-      <Head>
-        <title>404 Not Found</title>
-        <meta
-          name="description"
-          content="
-          Not Found"
-        ></meta>
-      </Head>
       <div className="grid min-h-full grid-cols-1 grid-rows-[1fr,auto,1fr] bg-white lg:grid-cols-[max(50%,36rem),1fr]">
         <main className="mx-auto w-full max-w-7xl px-6 py-24 sm:py-32 lg:col-span-2 lg:col-start-1 lg:row-start-2 lg:px-8">
           <div className="max-w-lg">

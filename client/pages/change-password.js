@@ -1,8 +1,7 @@
-import Cookies from "cookies";
 import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { globalErrorContext } from "@/components/GlobalError";
 
 const ChangePasswordPage = () => {
@@ -159,17 +158,6 @@ const ChangePasswordPage = () => {
                   type="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6"
                 />
-
-                {/* <div
-              className={`pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 ${
-                inputEmailValid === false ? "" : "invisible"
-              }`}
-            >
-              <ExclamationCircleIcon
-                className="h-5 w-5 text-red-500"
-                aria-hidden="true"
-              />
-            </div> */}
               </div>
               <p
                 className={`mt-2 text-sm text-red-600 ${
@@ -240,15 +228,7 @@ const ChangePasswordPage = () => {
             </div>
           </form>
 
-          <p className="mt-10 text-center text-sm text-gray-500">
-            {/* Not a member?{" "}
-        <a
-          href="#"
-          className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-        >
-          Start a 14 day free trial
-        </a> */}
-          </p>
+          <p className="mt-10 text-center text-sm text-gray-500"></p>
         </div>
       </div>
     </>

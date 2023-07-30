@@ -10,14 +10,8 @@ import CommentPanel from "@/components/CommentPanel";
 import RecipeList from "@/components/RecipeList";
 import Head from "next/head";
 
-const recipeShowPage = ({
-  currentUser,
-  recipe,
-  comments,
-  mayAlsoLikeRecipe,
-}) => {
+const recipeShowPage = ({ currentUser, recipe, mayAlsoLikeRecipe }) => {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
   const [commentPanelOpen, setCommentPanelOpen] = useState(false);
   const [testcomments, setTestComments] = useState([]);
   const [commentIsLoading, setCommentIsLoading] = useState(false);

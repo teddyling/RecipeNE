@@ -85,17 +85,6 @@ const RecipePage = ({
   const [dishTypeCheckStatus, setDishTypeCheckStatus] =
     useState(dishTypeButtons);
 
-  const handleSortClick = (e, i) => {
-    e.preventDefault();
-    if (i === 0) {
-      setSortOrder(`most-popular`);
-    } else if (i === 1) {
-      setSortOrder("diff-low-to-high");
-    } else if (i === 2) {
-      setSortOrder("diff-high-to-low");
-    }
-  };
-
   const handleMainIngredientBoxChange = (e, i) => {
     if (!mainIngredientCheckStatus[i]) {
       setMainIngredientCheckStatus((prev) => {

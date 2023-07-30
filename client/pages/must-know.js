@@ -93,21 +93,4 @@ export async function getServerSideProps(context) {
   }
 }
 
-// export async function getServerSideProps(context) {
-//   const response = await axios.get(
-//     "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/v1/recipes/must-know",
-//     {
-//       headers: {
-//         Host: "authenticdongbei.com",
-//       },
-//     }
-//   );
-
-//   return {
-//     props: {
-//       recipes: response.data,
-//     },
-//   };
-// }
-
 export default MustKnow;
