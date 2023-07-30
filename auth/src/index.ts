@@ -10,7 +10,7 @@ const start = async () => {
     console.error("Uncaught Exeception, shuting down...", err);
     process.exit(1);
   });
-  console.log("starting....");
+  console.log("starting.....");
 
   if (!process.env.MONGO_URL) {
     throw new Error("MONGO_URL is not defined!");
