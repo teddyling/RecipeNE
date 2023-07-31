@@ -20,7 +20,7 @@ const recipeShowPage = ({ currentUser, recipe, mayAlsoLikeRecipe }) => {
   useEffect(() => {
     setCommentIsLoading(true);
     axios
-      .get(`http://www.recipe-ne.com/api/v1/comments/${recipe.id}`)
+      .get(`https://www.recipe-ne.com/api/v1/comments/${recipe.id}`)
       .then((data) => {
         setCommentIsLoading(false);
         setTestComments(
@@ -64,7 +64,7 @@ const recipeShowPage = ({ currentUser, recipe, mayAlsoLikeRecipe }) => {
 
   const onCommentSubmit = (content) => {
     axios
-      .post("http://www.recipe-ne.com/api/v1/comments", {
+      .post("https://www.recipe-ne.com/api/v1/comments", {
         recipeId: recipe.id,
         comment: content,
       })
@@ -331,7 +331,7 @@ const recipeShowPage = ({ currentUser, recipe, mayAlsoLikeRecipe }) => {
 export async function getServerSideProps(context) {
   const slug = context.query.slug;
   const response = await axios.get(
-    `http://www.recipe-ne.com/api/v1/recipes/s/${slug}`,
+    `https://www.recipe-ne.com/api/v1/recipes/s/${slug}`,
     {
       headers: {
         Host: "www.recipe-ne.com",
@@ -342,7 +342,7 @@ export async function getServerSideProps(context) {
   const recipeId = recipe.id;
 
   const commentResponse = await axios.get(
-    `http://www.recipe-ne.com/api/v1/comments/${recipeId}`,
+    `https://www.recipe-ne.com/api/v1/comments/${recipeId}`,
     {
       headers: {
         Host: "www.recipe-ne.com",
@@ -351,7 +351,7 @@ export async function getServerSideProps(context) {
   );
 
   const mayAlsoLikeResponse = await axios.get(
-    "http://www.recipe-ne.com/api/v1/recipes/may-also-like",
+    "https://www.recipe-ne.com/api/v1/recipes/may-also-like",
     {
       headers: {
         Host: "www.recipe-ne.com",
@@ -366,7 +366,7 @@ export async function getServerSideProps(context) {
   const cookies = new Cookies(req, res);
   try {
     const response = await axios.get(
-      "http://www.recipe-ne.com/api/v1/users/currentuser",
+      "https://www.recipe-ne.com/api/v1/users/currentuser",
       {
         headers: {
           Host: "www.recipe-ne.com",
@@ -385,7 +385,7 @@ export async function getServerSideProps(context) {
       console.log("Trying to refresh token");
       if (err.response.data.errors.message === `Token Expired`) {
         const refreshResponse = await axios.post(
-          `http://www.recipe-ne.com/api/v1/users/refresh-token`,
+          `https://www.recipe-ne.com/api/v1/users/refresh-token`,
           {},
           {
             headers: {

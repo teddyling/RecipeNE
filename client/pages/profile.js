@@ -53,7 +53,7 @@ export default function Example({ currentUser }) {
 
   useEffect(() => {
     axios
-      .get("http://www.recipe-ne.com/api/v1/comments/mycomments")
+      .get("https://www.recipe-ne.com/api/v1/comments/mycomments")
       .then((res) => {
         setComments(res.data.comments);
       })
@@ -117,12 +117,12 @@ export default function Example({ currentUser }) {
   const handleNewUsernameSave = async (e) => {
     e.preventDefault();
     await axios
-      .patch("http://www.recipe-ne.com/api/v1/users/updateme", {
+      .patch("https://www.recipe-ne.com/api/v1/users/updateme", {
         username: newUsername,
       })
       .then((data) => {
         axios
-          .post(`http://www.recipe-ne.com/api/v1/users/signout`, {})
+          .post(`https://www.recipe-ne.com/api/v1/users/signout`, {})
           .then(() => {
             setUsernameErrorMessage("");
             setUsernameChanged(true);
@@ -149,12 +149,12 @@ export default function Example({ currentUser }) {
   const handleNewEmailSave = async (e) => {
     e.preventDefault();
     await axios
-      .patch("http://www.recipe-ne.com/api/v1/users/updatemyemail", {
+      .patch("https://www.recipe-ne.com/api/v1/users/updatemyemail", {
         email: newEmailAddress,
       })
       .then(() => {
         axios
-          .post(`http://www.recipe-ne.com/api/v1/users/signout`, {})
+          .post(`https://www.recipe-ne.com/api/v1/users/signout`, {})
           .then(() => {
             setEmailErrorMessage("");
             setEmailChanged(true);
@@ -503,7 +503,7 @@ export async function getServerSideProps(context) {
   const cookies = new Cookies(req, res);
   try {
     const response = await axios.get(
-      "http://www.recipe-ne.com/api/v1/users/currentuser",
+      "https://www.recipe-ne.com/api/v1/users/currentuser",
       {
         headers: {
           Host: "www.recipe-ne.com",
@@ -522,7 +522,7 @@ export async function getServerSideProps(context) {
       console.log("Trying to refresh token");
       if (err.response.data.errors.message === `Token Expired`) {
         const refreshResponse = await axios.post(
-          `http://www.recipe-ne.com/api/v1/users/refresh-token`,
+          `https://www.recipe-ne.com/api/v1/users/refresh-token`,
           {},
           {
             headers: {

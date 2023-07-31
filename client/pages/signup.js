@@ -103,7 +103,7 @@ const Signup = () => {
     setFormValid(false);
 
     await axios
-      .post("http://www.recipe-ne.com/api/v1/users/signup", {
+      .post("https://www.recipe-ne.com/api/v1/users/signup", {
         username: inputUsername,
         email: inputEmail,
         password: inputPassword,

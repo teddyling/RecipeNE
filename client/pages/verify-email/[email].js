@@ -31,7 +31,7 @@ const VerifyEmailPage = () => {
     setResendButtonAble(false);
     if (router.query.type === "verify-signup") {
       axios
-        .post("http://www.recipe-ne.com/api/v1/users/resend-email", {
+        .post("https://www.recipe-ne.com/api/v1/users/resend-email", {
           email,
           type,
         })
@@ -50,7 +50,7 @@ const VerifyEmailPage = () => {
       console.log(email, type);
       const newEmail = router.query.newemail;
       axios
-        .post("http://www.recipe-ne.com/api/v1/users/resend-email", {
+        .post("https://www.recipe-ne.com/api/v1/users/resend-email", {
           email,
           type,
           newEmail,
@@ -67,7 +67,7 @@ const VerifyEmailPage = () => {
         });
     } else if (router.query.type === "forgot-password") {
       axios
-        .post("http://www.recipe-ne.com/api/v1/users/resend-email", {
+        .post("https://www.recipe-ne.com/api/v1/users/resend-email", {
           email,
           type,
         })

@@ -33,7 +33,7 @@ const MustKnow = ({ currentUser, recipes }) => {
 
 export async function getServerSideProps(context) {
   const recipeResponse = await axios.get(
-    "http://www.recipe-ne.com/api/v1/recipes/must-know",
+    "https://www.recipe-ne.com/api/v1/recipes/must-know",
     {
       headers: {
         Host: "www.recipe-ne.com",
@@ -46,7 +46,7 @@ export async function getServerSideProps(context) {
   const cookies = new Cookies(req, res);
   try {
     const response = await axios.get(
-      "http://www.recipe-ne.com/api/v1/users/currentuser",
+      "https://www.recipe-ne.com/api/v1/users/currentuser",
       {
         headers: {
           Host: "www.recipe-ne.com",
@@ -65,7 +65,7 @@ export async function getServerSideProps(context) {
       console.log("Trying to refresh token");
       if (err.response.data.errors.message === `Token Expired`) {
         const refreshResponse = await axios.post(
-          `http://www.recipe-ne.com/api/v1/users/refresh-token`,
+          `https://www.recipe-ne.com/api/v1/users/refresh-token`,
           {},
           {
             headers: {

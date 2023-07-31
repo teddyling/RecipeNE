@@ -163,8 +163,8 @@ router.patch(
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                   <td align="center" valign="top" style="padding: 36px 24px;">
-                    <a href="http://www.recipe-ne.com" target="_blank" style="display: inline-block;">
-                      <img src="http://www.recipe-ne.com/logo.png" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
+                    <a href="https://www.recipe-ne.com" target="_blank" style="display: inline-block;">
+                      <img src="https://www.recipe-ne.com/logo.png" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
                     </a>
                   </td>
                 </tr>
@@ -358,8 +358,8 @@ router.patch(
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                   <td align="center" valign="top" style="padding: 36px 24px;">
-                    <a href="http://www.recipe-ne.com" target="_blank" style="display: inline-block;">
-                      <img src="http://www.recipe-ne.com/logo.png" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
+                    <a href="https://www.recipe-ne.com" target="_blank" style="display: inline-block;">
+                      <img src="https://www.recipe-ne.com/logo.png" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
                     </a>
                   </td>
                 </tr>

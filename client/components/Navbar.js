@@ -30,7 +30,7 @@ const NavBar = ({ currentUser }) => {
   const onSignout = async (e) => {
     try {
       e.stopPropagation();
-      await axios.post(`http://www.recipe-ne.com/api/v1/users/signout`, {});
+      await axios.post(`https://www.recipe-ne.com/api/v1/users/signout`, {});
       window.location.href = "/";
     } catch (err) {
       console.error(err);
@@ -254,14 +254,13 @@ const NavBar = ({ currentUser }) => {
                 Sign up
               </Link>
             ) : (
-              <div />
+              <div className="ml-auto" />
             )}
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span className="sr-only">Close menu</span>
               <XMarkIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
