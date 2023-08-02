@@ -2,6 +2,8 @@ import {
   NotAuthorizedError,
   BadRequestError,
   ResourceNotFoundError,
+  ensureLogin,
+  ensureAdmin,
 } from "@dongbei/utilities";
 import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
@@ -11,6 +13,8 @@ const router = express.Router();
 
 router.delete(
   "/api/v1/comments/:commentId",
+  ensureLogin,
+  ensureAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.currentUser || req.currentUser.role !== "admin") {

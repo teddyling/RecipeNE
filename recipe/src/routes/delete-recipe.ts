@@ -15,12 +15,9 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.delete(
   "/api/v1/recipes/:id",
-
-  addAuthHeader,
   ensureLogin,
   ensureAdmin,
   doubleCsrfProtection,
-
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {

@@ -16,10 +16,9 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 router.patch(
   "/api/v1/recipes/:id",
 
-  addAuthHeader,
   ensureLogin,
   ensureAdmin,
-  doubleCsrfProtection,
+  //doubleCsrfProtection,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;

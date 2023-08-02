@@ -13,7 +13,6 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.post(
   "/api/v1/users/signout",
-  // addAuthHeader,
   ensureLogin,
   // doubleCsrfProtection,
   async (req: Request, res: Response, next: NextFunction) => {

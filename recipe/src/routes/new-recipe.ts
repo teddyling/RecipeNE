@@ -18,8 +18,6 @@ const { doubleCsrfProtection } = doubleCsrfUtilities;
 
 router.post(
   "/api/v1/recipes",
-
-  addAuthHeader,
   ensureLogin,
   ensureAdmin,
   // doubleCsrfProtection,

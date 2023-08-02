@@ -1,6 +1,7 @@
 import {
   NotAuthorizedError,
   addAuthHeader,
+  ensureAdmin,
   ensureLogin,
 } from "@dongbei/utilities";
 import express, { Request, Response, NextFunction } from "express";
@@ -13,6 +14,7 @@ router.get(
   "/api/v1/comments",
   // addAuthHeader,
   ensureLogin,
+  ensureAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.currentUser) {
