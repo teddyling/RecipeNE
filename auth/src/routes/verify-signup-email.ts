@@ -63,7 +63,7 @@ router.get(
         httpOnly: true,
         signed: true,
         // path: "/api/v1",
-        secure: false,
+        secure: true,
         sameSite: "lax",
       });
 

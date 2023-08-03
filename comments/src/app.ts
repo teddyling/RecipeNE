@@ -39,6 +39,7 @@ app.use(
   cookieSession({
     httpOnly: true,
     signed: false,
+    secure: true,
 
     secret: process.env.SESSION_SECRET,
     sameSite: "lax",
