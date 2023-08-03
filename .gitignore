@@ -2,3 +2,4 @@ node_modules
 auth/jwt-secret.txt
 utilities
 client/.next
+staging_issuer.yaml
