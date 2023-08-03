@@ -1,4 +1,5 @@
 
+
 # RecipeNE
 
 **RecipeNE** is a micro-service website dedicated to Chinese Northeastern Cuisine recipes. We offer over 50 of the most authentic Chinese Northeastern recipes for free. Visit [RecipeNE](https://www.recipe-ne.com/) today and try one of these delicious recipes!
@@ -34,11 +35,9 @@ As the sole creator of RecipeNE, I have been putting in my utmost effort to brin
 - Email confirmation
 - Leaving reviews
 - Changing username/password/sign-in email
-
-Some features will be added in the future:
+Some features will be added in the future：
 - User-customized avatars.
 - User modification/deletion of comments.
-
 While developing this website, security has been given top priority. RecipeNE employs the following security measures:
 - HTTP-only cookie JWT-based authentication
 - DDOS attack prevention
@@ -54,7 +53,7 @@ While developing this website, security has been given top priority. RecipeNE em
 
 
 ## Technology
-This website is developed on **Node.js**, primarily utilizing JavaScript and TypeScript. This website is built based on **microservice** principles.
+This website is developed on **Node.js**, primarily utilizing JavaScript and TypeScript. This website is built based on **microservice** principles, and has been deployed on a **DigitalOcean Managed Kubernetes cluster**.
 
 The front-end of the website employs the following framework(s):
 - **React**
@@ -70,5 +69,6 @@ This website uses the following databases:
 
 This website utilizes the **Nats Streaming Server** to facilitate communication between microservices.
 
+To obtain the Docker image of each individual service, please visit my [Docker Hub repository](https://hub.docker.com/repositories/lingta)
 ## Feedback
-If you encounter any issues (typos, bugs, etc.) while using RecipeNE, please send the problems to my email at teddy199708091@gmail.com.
+If you encounter any issues (typos, bugs, etc.) while using RecipeNE, please send the problems to my email at teddy199708091@gmail.com. Thank you very much!
