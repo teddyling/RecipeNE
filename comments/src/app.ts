@@ -17,18 +17,10 @@ import { errorHandler } from "@dongbei/utilities";
 import { NotFoundError } from "@dongbei/utilities";
 
 const app = express();
+app.set("trust proxy", true);
 app.disable("x-powered-by");
 
-// const limiter = rateLimit({
-//   max: 100,
-//   windowMs: 60 * 60 * 1000,
-//   message: "To many requests",
-//   standardHeaders: true,
-//   legacyHeaders: false,
-// });
-
 app.use(helmet());
-// app.use("/api/v1/comments", limiter);
 
 app.use(express.json({ limit: "1mb" }));
 app.use(mongoSanitize());

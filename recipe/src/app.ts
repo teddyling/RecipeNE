@@ -22,6 +22,7 @@ import { NotFoundError } from "@dongbei/utilities";
 import { mayAlsoLikeRouter } from "./routes/get-random-recipes";
 
 const app = express();
+app.set("trust proxy", true);
 app.disable("x-powered-by");
 // const limiter = rateLimit({
 //   max: 100,

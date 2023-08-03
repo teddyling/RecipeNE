@@ -29,6 +29,7 @@ import { getAllUsersRouter } from "./routes/all-user";
 import { resendemailRouter } from "./routes/resend-email";
 
 const app = express();
+app.set("trust proxy", true);
 app.disable("x-powered-by");
 
 // const limiter = rateLimit({
