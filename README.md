@@ -35,9 +35,11 @@ As the sole creator of RecipeNE, I have been putting in my utmost effort to brin
 - Email confirmation
 - Leaving reviews
 - Changing username/password/sign-in email
+
 Some features will be added in the future：
 - User-customized avatars.
 - User modification/deletion of comments.
+
 While developing this website, security has been given top priority. RecipeNE employs the following security measures:
 - HTTP-only cookie JWT-based authentication
 - DDOS attack prevention
