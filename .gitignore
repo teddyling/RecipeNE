@@ -3,3 +3,5 @@ auth/jwt-secret.txt
 utilities
 client/.next
 staging_issuer.yaml
+prod_issuer.yaml
+skaffold.yml
