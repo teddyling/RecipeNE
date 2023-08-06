@@ -69,10 +69,13 @@ This website uses the following databases:
 - **MongoDB**
 - **Redis**
 
+Other technology used::
+- **Docker**
+- **Kubernetes**
+
 This website utilizes the **Nats Streaming Server** to facilitate communication between microservices.
 
 The images were hosted on **Amazon S3**.
-
 
 
 To obtain the Docker image of each individual service, please visit my [Docker Hub repository](https://hub.docker.com/repositories/lingta)
