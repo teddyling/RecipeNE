@@ -1,6 +1,6 @@
 
 
-# RecipeNE
+# RecipeNE (recipe-ne.com)
 
 **RecipeNE** is a micro-service website dedicated to Chinese Northeastern Cuisine recipes. We offer over 50 of the most authentic Chinese Northeastern recipes for free. Visit [RecipeNE](https://www.recipe-ne.com/) today and try one of these delicious recipes!
 
